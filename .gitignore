@@ -1,0 +1,25 @@
+# Ignore everything in the directory
+/logs/*
+/logs/xdebug/*
+/temp/*
+/temp/phpstan/*
+/temp/phpstorm-coverage/*
+
+# Except the directory itself
+!/logs/
+!/logs/xdebug/
+!/temp/
+!/temp/phpstan/
+!/temp/phpstorm-coverage/
+
+# Optional: Keep a .gitkeep or similar file to retain the empty directory in Git
+!/logs/.gitkeep
+!/logs/xdebug/.gitkeep
+!/temp/.gitkeep
+!/temp/phpstan/.gitkeep
+!/temp/phpstorm-coverage/.gitkeep
+
+/_unused/
+/vendor/
+/.idea/
+/.phpunit.result.cache
