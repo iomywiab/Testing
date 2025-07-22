@@ -38,7 +38,6 @@
         "shipmonk/composer-dependency-analyser": "*",
         "shipmonk/phpstan-baseline-per-identifier": "*",
         "shipmonk/phpstan-rules": "*",
-        "squizlabs/php_codesniffer": "*",
         "voku/phpstan-rules": "*"
     },
     "autoload": {
