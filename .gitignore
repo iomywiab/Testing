@@ -19,6 +19,7 @@
 !/temp/phpstan/.gitkeep
 !/temp/phpstorm-coverage/.gitkeep
 
+# others
 /_unused/
 /vendor/
 /.idea/
