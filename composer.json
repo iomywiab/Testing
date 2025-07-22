@@ -31,7 +31,7 @@
         "phpstan/phpstan-symfony": "*",
         "phpunit/phpunit": "*",
         "psalm/plugin-phpunit": "*",
-        "roave/security-advisories": "dev-latest",
+        "roave/security-advisories": "dev-latest@dev",
         "sebastian/phpcpd": "*",
         "shipmonk/composer-dependency-analyser": "*",
         "shipmonk/phpstan-baseline-per-identifier": "*",
