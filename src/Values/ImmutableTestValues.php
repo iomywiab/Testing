@@ -4,7 +4,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: ImmutableTestValues.php
  * Project: Testing
- * Modified at: 21/07/2025, 10:18
+ * Modified at: 23/07/2025, 21:11
  * Modified by: pnehls
  */
 
@@ -13,11 +13,8 @@ declare(strict_types=1);
 namespace Iomywiab\Library\Testing\Values;
 
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
-use Iomywiab\Library\Testing\Values\Enums\SubstitutionEnum;
-use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
 use Iomywiab\Library\Testing\Values\Tags\TagsInterface;
-use Iomywiab\Library\Testing\Values\Types\ImmutableObjectTestValue;
 
 class ImmutableTestValues extends AbstractImmutableTestValues
 {
@@ -25,16 +22,11 @@ class ImmutableTestValues extends AbstractImmutableTestValues
     private static array $cache = [];
 
     /**
-     * @param TagsInterface $includeTags
-     * @param TagsInterface $excludeTags
-     * @return non-empty-string
+     * @inheritDoc
      */
-    private static function getCacheKey(TagsInterface $includeTags, TagsInterface $excludeTags): string
+    public static function arrays(TagsInterface|array|TagEnum|null $excludeTags = null): array
     {
-        $includeKey = $includeTags->getBitmask();
-        $excludeKey = $excludeTags->getBitmask();
-
-        return $includeKey.'-'.$excludeKey;
+        return self::get(TagEnum::ARRAY, $excludeTags);
     }
 
     /**
@@ -75,11 +67,16 @@ class ImmutableTestValues extends AbstractImmutableTestValues
     }
 
     /**
-     * @inheritDoc
+     * @param TagsInterface $includeTags
+     * @param TagsInterface $excludeTags
+     * @return non-empty-string
      */
-    public static function arrays(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    private static function getCacheKey(TagsInterface $includeTags, TagsInterface $excludeTags): string
     {
-        return self::get(TagEnum::ARRAY, $excludeTags);
+        $includeKey = $includeTags->getBitmask();
+        $excludeKey = $excludeTags->getBitmask();
+
+        return $includeKey.'-'.$excludeKey;
     }
 
     /**
@@ -88,46 +85,6 @@ class ImmutableTestValues extends AbstractImmutableTestValues
     public static function booleans(TagsInterface|array|TagEnum|null $excludeTags = null): array
     {
         return self::get([TagEnum::BOOLEAN], $excludeTags);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function floats(TagsInterface|array|TagEnum|null $excludeTags = null): array
-    {
-        return self::get([TagEnum::FLOAT], $excludeTags);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function integers(TagsInterface|array|TagEnum|null $excludeTags = null): array
-    {
-        return self::get([TagEnum::INTEGER], $excludeTags);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function resources(TagsInterface|array|TagEnum|null $excludeTags = null): array
-    {
-        return self::get([TagEnum::RESOURCE], $excludeTags);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function strings(TagsInterface|array|TagEnum|null $excludeTags = null): array
-    {
-        return self::get([TagEnum::STRING], $excludeTags);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function nulls(): array
-    {
-        return self::get([TagEnum::NULL]);
     }
 
     /**
@@ -149,9 +106,25 @@ class ImmutableTestValues extends AbstractImmutableTestValues
     /**
      * @inheritDoc
      */
-    public static function objects(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function floats(TagsInterface|array|TagEnum|null $excludeTags = null): array
     {
-        return self::get([TagEnum::OBJECT], $excludeTags);
+        return self::get([TagEnum::FLOAT], $excludeTags);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getWithout(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    {
+        return self::get(null, $excludeTags);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function integers(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    {
+        return self::get([TagEnum::INTEGER], $excludeTags);
     }
 
     /**
@@ -181,37 +154,33 @@ class ImmutableTestValues extends AbstractImmutableTestValues
     /**
      * @inheritDoc
      */
-    public static function getWithout(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function nulls(): array
     {
-        return self::get(null, $excludeTags);
+        return self::get([TagEnum::NULL]);
     }
 
     /**
-     * @param non-empty-array<array-key,mixed> $template
-     * @param TagsInterface|list<TagEnum>|TagEnum|null $includeTags
-     * @param TagsInterface|list<TagEnum>|TagEnum|null $excludeTags
-     * @return non-empty-array<array-key,mixed>
-     * @throws TestValueExceptionInterface
+     * @inheritDoc
      */
-    public static function byTemplate(array $template, TagsInterface|array|TagEnum|null $includeTags = null, TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function objects(TagsInterface|array|TagEnum|null $excludeTags = null): array
     {
-        $testValues = self::get($includeTags, $excludeTags);
-        $return = [];
-        foreach ($testValues as $testTitle => $testValue) {
-            $row = $template;
-            foreach ($row as $key => $value) {
-                switch ($value) {
-                    case SubstitutionEnum::KEY:
-                        $row[$key] = $testTitle;
-                        break;
-                    case SubstitutionEnum::VALUE:
-                        $row[$key] = $testValue;
-                        break;
-                }
-            }
-            $return[$testTitle] = $row;
-        }
-
-        return $return;
+        return self::get([TagEnum::OBJECT], $excludeTags);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public static function resources(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    {
+        return self::get([TagEnum::RESOURCE], $excludeTags);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function strings(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    {
+        return self::get([TagEnum::STRING], $excludeTags);
+    }
+
 }
