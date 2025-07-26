@@ -14,8 +14,10 @@ namespace Iomywiab\Tests\Testing\Unit\Tags;
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
 use Iomywiab\Library\Testing\Values\Tags\TagsInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(Tags::class)]
 class TagsTest extends TestCase
 {
     /**
@@ -41,8 +43,9 @@ class TagsTest extends TestCase
     }
 
     /**
-     * @param TagsInterface|TagEnum|array|null $parameters
-     * @param TagsInterface|TagEnum|array<array-key,TagEnum>|null $expectedTags
+     *
+     * @param TagsInterface|TagEnum|array<array-key,TagEnum>|null $parameters
+     * @param list<TagEnum> $expectedTags
      * @return void
      * @dataProvider provideTestDataForConstructor
      */
@@ -52,6 +55,9 @@ class TagsTest extends TestCase
         $this->checkTags($tags, $expectedTags);
     }
 
+    /**
+     * @return non-empty-list<non-empty-list<mixed>>
+     */
     public static function provideTestDataForConstructor(): array
     {
         return [
@@ -103,21 +109,24 @@ class TagsTest extends TestCase
     }
 
     /**
-     * @param array $tags
-     * @param array $includedTags
-     * @param array $excludedTags
-     * @param array $result
+     * @param list<TagEnum> $tags
+     * @param list<TagEnum> $includedTags
+     * @param list<TagEnum> $excludedTags
+     * @param list<TagEnum> $result
      * @return void
      * @dataProvider provideTestDataForFilter
      */
     public function testFilter(array $tags, array $includedTags, array $excludedTags, array $result): void
     {
-        $tags = new Tags($tags);
-        $filtered = $tags->getFiltered($includedTags, $excludedTags);
+        $tagsObject = new Tags($tags);
+        $filtered = $tagsObject->getFiltered($includedTags, $excludedTags);
         $filteredCases = $filtered->cases();
         self::assertEquals($result, $filteredCases);
     }
 
+    /**
+     * @return non-empty-list<non-empty-list<mixed>>
+     */
     public static function provideTestDataForFilter(): array
     {
         return [

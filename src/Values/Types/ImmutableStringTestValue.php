@@ -34,6 +34,7 @@ class ImmutableStringTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert(\is_string($this->value), 'Value is not a string: ' . \gettype($this->value));
         return $this->value;
     }
 }

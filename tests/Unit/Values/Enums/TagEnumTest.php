@@ -16,8 +16,10 @@ use Iomywiab\Library\Testing\DataTypes\Enum4Testing;
 use Iomywiab\Library\Testing\DataTypes\IntEnum4Testing;
 use Iomywiab\Library\Testing\DataTypes\StringEnum4Testing;
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(TagEnum::class)]
 class TagEnumTest extends TestCase
 {
     /**
@@ -32,13 +34,15 @@ class TagEnumTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return non-empty-list<non-empty-list<mixed>>
      */
     public static function provideTestData(): array
     {
         $openMemory = \fopen('php://memory', 'rb');
         $closedMemory = \fopen('php://memory', 'rb');
-        \fclose($closedMemory);
+        if (false !== $closedMemory) {
+            \fclose($closedMemory);
+        }
 
         return [
             [[], TagEnum::ARRAY],
@@ -66,7 +70,7 @@ class TagEnumTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return non-empty-list<non-empty-list<mixed>>
      */
     public static function provideTestDataForIsMine(): array
     {

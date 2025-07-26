@@ -31,6 +31,7 @@ class ImmutableBoolStringTestValue extends AbstractImmutableSingleTestValue
     {
         \assert('' !== $value);
 
+        // @phpstan-ignore voku.Coalesce
         $tags ??= new Tags();
         $tags->add(TagEnum::BOOLEAN);
         $tags->add(TagEnum::BOOL_STRING);
@@ -51,6 +52,8 @@ class ImmutableBoolStringTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert(\is_string($this->value));
+
         return $this->value;
     }
 }

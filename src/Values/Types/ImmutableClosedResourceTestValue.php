@@ -28,6 +28,7 @@ class ImmutableClosedResourceTestValue extends AbstractImmutableSingleTestValue
      */
     public function __construct(?string $description, mixed $resource, ?TagsInterface $tags = null)
     {
+        // @phpstan-ignore voku.Coalesce
         $tags ??= new Tags();
         $tags->add(TagEnum::CLOSED_RESOURCE);
 
@@ -39,6 +40,7 @@ class ImmutableClosedResourceTestValue extends AbstractImmutableSingleTestValue
      */
     public function toResource(): mixed
     {
+        // @phpstan-ignore return.type
         return $this->value;
     }
 
@@ -47,10 +49,13 @@ class ImmutableClosedResourceTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        // @phpstan-ignore greaterOrEqual.alwaysTrue
         $id = (PHP_VERSION_ID >= 80000)
+            // @phpstan-ignore argument.type
             ? ' (id:'.\get_resource_id($this->value).')'
             : '';
 
+        // @phpstan-ignore argument.type
         return \get_resource_type($this->value).$id;
     }
 }

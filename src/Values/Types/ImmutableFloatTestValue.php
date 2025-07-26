@@ -34,6 +34,8 @@ class ImmutableFloatTestValue extends AbstractImmutableSingleTestValue
      */
     public function toFloat(): float
     {
+        \assert(\is_float($this->value));
+
         return $this->value;
     }
 
@@ -42,6 +44,8 @@ class ImmutableFloatTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert(\is_float($this->value));
+
         return (string)$this->value;
     }
 }

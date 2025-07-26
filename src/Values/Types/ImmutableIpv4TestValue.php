@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Iomywiab\Library\Testing\Values\Types;
 
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
+use Iomywiab\Library\Testing\Values\Exceptions\TestValueException;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
 use Iomywiab\Library\Testing\Values\Tags\TagsInterface;
@@ -30,6 +31,7 @@ class ImmutableIpv4TestValue extends AbstractImmutableSingleTestValue
     {
         \assert(filter_var($ipv6, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4));
 
+        // @phpstan-ignore voku.Coalesce
         $tags ??= new Tags();
         $tags->add(TagEnum::INTEGER);
         $tags->add(TagEnum::IPv4);
@@ -43,7 +45,14 @@ class ImmutableIpv4TestValue extends AbstractImmutableSingleTestValue
      */
     public function toInt(): int
     {
-        return \ip2long($this->value);
+        \assert(\is_string($this->value));
+        $result = \ip2long($this->value);
+
+        if (false === $result) {
+            throw new TestValueException('Unable to convert IPv4 to integer. ipv4="' . $this->value . '"');
+        }
+
+        return $result;
     }
 
     /**
@@ -51,6 +60,8 @@ class ImmutableIpv4TestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert(\is_string($this->value));
+
         return $this->value;
     }
 }

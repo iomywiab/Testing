@@ -34,6 +34,8 @@ class ImmutableIntegerTestValue extends AbstractImmutableSingleTestValue
      */
     public function toInt(): int
     {
+        \assert(\is_int($this->value));
+
         return $this->value;
     }
 
@@ -42,6 +44,8 @@ class ImmutableIntegerTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert(\is_int($this->value));
+
         return (string)$this->value;
     }
 }

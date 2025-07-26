@@ -30,6 +30,7 @@ class ImmutableIpv6TestValue extends AbstractImmutableSingleTestValue
     {
         \assert(filter_var($ipv6, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6), $ipv6);
 
+        // @phpstan-ignore voku.Coalesce
         $tags ??= new Tags();
         $tags->add(TagEnum::IPv6);
         $tags->add(TagEnum::IP_ADDRESS);
@@ -42,6 +43,8 @@ class ImmutableIpv6TestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert(\is_string($this->value));
+
         return $this->value;
     }
 }

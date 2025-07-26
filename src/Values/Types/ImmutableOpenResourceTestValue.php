@@ -36,6 +36,8 @@ class ImmutableOpenResourceTestValue extends AbstractImmutableSingleTestValue
      */
     public function toResource(): mixed
     {
+        \assert(\is_resource($this->value));
+
         return $this->value;
     }
 
@@ -44,6 +46,9 @@ class ImmutableOpenResourceTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert(\is_resource($this->value));
+
+        // @phpstan-ignore greaterOrEqual.alwaysTrue
         $id = (PHP_VERSION_ID >= 80000)
             ? ' (id:'.\get_resource_id($this->value).')'
             : '';

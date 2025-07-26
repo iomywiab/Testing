@@ -20,7 +20,7 @@ class ImmutableArrayTestValue extends AbstractImmutableSingleTestValue
 
     /**
      * @param non-empty-string|null $description
-     * @param array $array
+     * @param array<array-key,mixed> $array
      * @param TagsInterface|null $tags
      * @throws TestValueExceptionInterface
      */
@@ -34,6 +34,8 @@ class ImmutableArrayTestValue extends AbstractImmutableSingleTestValue
      */
     public function toArray(): array
     {
+        \assert(\is_array($this->value));
+
         return $this->value;
     }
 
@@ -42,10 +44,12 @@ class ImmutableArrayTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert(\is_array($this->value));
+
         $string = '[';
         $separator = '';
         foreach ($this->value as $key => $value) {
-            $string .= $separator.$key.'=>'.$value;
+            $string .= $separator.$key.'=>'.(\is_scalar($value) ? (string)$value : \gettype($value));
             $separator = ',';
         }
 

@@ -30,6 +30,7 @@ class ImmutableNullTestValue extends AbstractImmutableSingleTestValue
     {
         \assert(\is_null($null));
 
+        // @phpstan-ignore voku.Coalesce
         $tags ??= new Tags();
         $tags->add(TagEnum::NULL);
 

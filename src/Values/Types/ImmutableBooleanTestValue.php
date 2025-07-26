@@ -34,6 +34,8 @@ class ImmutableBooleanTestValue extends AbstractImmutableSingleTestValue
      */
     public function toBool(): bool
     {
+        \assert(\is_bool($this->value));
+
         return $this->value;
     }
 
@@ -42,6 +44,8 @@ class ImmutableBooleanTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert(\is_bool($this->value));
+
         return $this->value ? 'true' : 'false';
     }
 }

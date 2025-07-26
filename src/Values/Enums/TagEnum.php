@@ -113,48 +113,92 @@ enum TagEnum: int
      */
     public function isMine(mixed $value): bool
     {
-        return match ($this) {
-            self::ARRAY => \is_array($value),
-            self::BOOLEAN => \is_bool($value),
-            self::BOOL_STRING => (\is_string($value) && \in_array(\mb_strtolower($value), ['true', 'false'], true)),
-            self::CAPITAL_LETTER => \is_string($value) && (1 === \mb_strlen($value)) && \ctype_upper($value),
-            self::CHAR => \is_string($value) && (1 === \mb_strlen($value)),
-            self::CLOSED_RESOURCE => false, // cannot be determined
-            self::DATETIME => ($value instanceof \DateTimeInterface),
-            self::DIGIT => \is_string($value) && (1 === \mb_strlen($value)) && \ctype_digit($value),
-            self::DOMAIN => \is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME),
-            self::EMAIL => \is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_EMAIL),
-            self::EMPTY => empty($value),
-            self::ENUM => ($value instanceof \UnitEnum),
-            self::ENUM_INT => ($value instanceof \BackedEnum) && \is_int($value->value),
-            self::ENUM_STRING => ($value instanceof \BackedEnum) && \is_string($value->value),
-            self::EXCEPTION => ($value instanceof \Throwable),
-            self::FLOAT => \is_float($value),
-            self::FLOAT_NEGATIVE => \is_float($value) && ($value < 0.0),
-            self::FLOAT_NOT_NEGATIVE => ($value === 0.0),
-            self::FLOAT_POSITIVE => \is_float($value) && ($value > 0.0),
-            self::FLOAT_WITH_INT_VALUE => \is_float($value) && (\floor($value) === $value),
-            self::INTEGER => \is_int($value),
-            self::INTEGER_NEGATIVE => \is_int($value) && ($value < 0),
-            self::INTEGER_NOT_NEGATIVE => ($value === 0),
-            self::INTEGER_POSITIVE => \is_int($value) && ($value > 0),
-            self::IP_ADDRESS => (\is_int($value)&&(0<$value)) || (\is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_IP)),
-            self::IPv4 => (\is_int($value)&&(0<$value) && $value < (1 << 32)) || (\is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)),
-            self::IPv6 => (\is_int($value)&&(0<$value)) || (\is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)),
-            self::LETTER => \is_string($value) && (1 === \mb_strlen($value)) && \ctype_alpha($value),
-            self::MAC => \is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_MAC),
-            self::NULL => (null === $value),
-            self::OBJECT => \is_object($value),
-            self::PRIME => \is_int($value) && $this->isPrimeTrialDivision($value),
-            self::RESOURCE => \is_resource($value),
-            self::SMALL_LETTER => \is_string($value) && (1 === \mb_strlen($value)) && \ctype_lower($value),
-            self::STRING => \is_string($value),
-            self::STRING_FLOAT => \is_string($value) && \is_numeric($value) && (\str_contains($value, '.')),
-            self::STRING_INTEGER => \is_string($value) && \is_numeric($value) && (\floor((float)$value) === (float)$value),
-            self::STRING_LOWER => \is_string($value) && \ctype_lower($value),
-            self::STRING_NUMERIC => \is_string($value) && \is_numeric($value),
-            self::STRING_UPPER => \is_string($value) && \ctype_upper($value),
-            self::URL => \is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_URL),
-        };
+
+        return
+            match ($this) {
+                // @phpstan-ignore voku.Match
+                self::ARRAY => \is_array($value),
+                // @phpstan-ignore voku.Match
+                self::BOOLEAN => \is_bool($value),
+                // @phpstan-ignore voku.Match
+                self::BOOL_STRING => (\is_string($value) && \in_array(\mb_strtolower($value), ['true', 'false'], true)),
+                // @phpstan-ignore voku.Match
+                self::CAPITAL_LETTER => \is_string($value) && (1 === \mb_strlen($value)) && \ctype_upper($value),
+                // @phpstan-ignore voku.Match
+                self::CHAR => \is_string($value) && (1 === \mb_strlen($value)),
+                // @phpstan-ignore voku.Match
+                self::CLOSED_RESOURCE => false, // cannot be determined
+                // @phpstan-ignore voku.Match
+                self::DATETIME => ($value instanceof \DateTimeInterface),
+                // @phpstan-ignore voku.Match
+                self::DIGIT => \is_string($value) && (1 === \mb_strlen($value)) && \ctype_digit($value),
+                // @phpstan-ignore voku.Match
+                self::DOMAIN => \is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME),
+                // @phpstan-ignore voku.Match
+                self::EMAIL => \is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_EMAIL),
+                // @phpstan-ignore voku.Match, empty.notAllowed
+                self::EMPTY => empty($value),
+                // @phpstan-ignore voku.Match
+                self::ENUM => ($value instanceof \UnitEnum),
+                // @phpstan-ignore voku.Match
+                self::ENUM_INT => ($value instanceof \BackedEnum) && \is_int($value->value),
+                // @phpstan-ignore voku.Match
+                self::ENUM_STRING => ($value instanceof \BackedEnum) && \is_string($value->value),
+                // @phpstan-ignore voku.Match
+                self::EXCEPTION => ($value instanceof \Throwable),
+                // @phpstan-ignore voku.Match
+                self::FLOAT => \is_float($value),
+                // @phpstan-ignore voku.Match
+                self::FLOAT_NEGATIVE => \is_float($value) && ($value < 0.0),
+                // @phpstan-ignore voku.Match
+                self::FLOAT_NOT_NEGATIVE => ($value === 0.0),
+                // @phpstan-ignore voku.Match
+                self::FLOAT_POSITIVE => \is_float($value) && ($value > 0.0),
+                // @phpstan-ignore voku.Match
+                self::FLOAT_WITH_INT_VALUE => \is_float($value) && (\floor($value) === $value),
+                // @phpstan-ignore voku.Match
+                self::INTEGER => \is_int($value),
+                // @phpstan-ignore voku.Match
+                self::INTEGER_NEGATIVE => \is_int($value) && ($value < 0),
+                // @phpstan-ignore voku.Match
+                self::INTEGER_NOT_NEGATIVE => ($value === 0),
+                // @phpstan-ignore voku.Match
+                self::INTEGER_POSITIVE => \is_int($value) && ($value > 0),
+                // @phpstan-ignore voku.Match
+                self::IP_ADDRESS => (\is_int($value) && (0 < $value)) || (\is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_IP)),
+                // @phpstan-ignore voku.Match
+                self::IPv4 => (\is_int($value) && (0 < $value) && $value < (1 << 32)) || (\is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)),
+                // @phpstan-ignore voku.Match
+                self::IPv6 => (\is_int($value) && (0 < $value)) || (\is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)),
+                // @phpstan-ignore voku.Match
+                self::LETTER => \is_string($value) && (1 === \mb_strlen($value)) && \ctype_alpha($value),
+                // @phpstan-ignore voku.Match
+                self::MAC => \is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_MAC),
+                // @phpstan-ignore voku.Match
+                self::NULL => (null === $value),
+                // @phpstan-ignore voku.Match
+                self::OBJECT => \is_object($value),
+                // @phpstan-ignore voku.Match
+                self::PRIME => \is_int($value) && $this->isPrimeTrialDivision($value),
+                // @phpstan-ignore voku.Match
+                self::RESOURCE => \is_resource($value),
+                // @phpstan-ignore voku.Match
+                self::SMALL_LETTER => \is_string($value) && (1 === \mb_strlen($value)) && \ctype_lower($value),
+                // @phpstan-ignore voku.Match
+                // @phpstan-ignore voku.Match
+                self::STRING => \is_string($value),
+                // @phpstan-ignore voku.Match
+                self::STRING_FLOAT => \is_string($value) && \is_numeric($value) && (\str_contains($value, '.')),
+                // @phpstan-ignore voku.Match
+                self::STRING_INTEGER => \is_string($value) && \is_numeric($value) && (\floor((float)$value) === (float)$value),
+                // @phpstan-ignore voku.Match
+                self::STRING_LOWER => \is_string($value) && \ctype_lower($value),
+                // @phpstan-ignore voku.Match
+                self::STRING_NUMERIC => \is_string($value) && \is_numeric($value),
+                // @phpstan-ignore voku.Match
+                self::STRING_UPPER => \is_string($value) && \ctype_upper($value),
+                // @phpstan-ignore voku.Match
+                self::URL => \is_string($value) && (bool)\filter_var($value, FILTER_VALIDATE_URL),
+            };
     }
 }

@@ -12,12 +12,33 @@ declare(strict_types=1);
 namespace Iomywiab\Tests\Testing\Unit\Values;
 
 use Iomywiab\Library\Testing\Formatting\Format4Testing;
+use Iomywiab\Library\Testing\Values\AbstractImmutableTestValues;
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
+use Iomywiab\Library\Testing\Values\ImmutableTestValues;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
 use Iomywiab\Library\Testing\Values\TestValues;
+use Iomywiab\Library\Testing\Values\Types\AbstractImmutableSingleTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableArrayTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableBooleanTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableBoolStringTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableCharTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableClosedResourceTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableDateTimeTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableFloatTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableIntegerTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableIpv4TestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableIpv6TestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableNullTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableObjectTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableOpenResourceTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutableStringTestValue;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(TestValues::class)]
+#[UsesClass(AbstractImmutableTestValues::class), UsesClass(Tags::class), UsesClass(AbstractImmutableSingleTestValue::class), UsesClass(Format4Testing::class), UsesClass(TagEnum::class), UsesClass(ImmutableTestValues::class), UsesClass(ImmutableArrayTestValue::class), UsesClass(ImmutableBoolStringTestValue::class), UsesClass(ImmutableBooleanTestValue::class), UsesClass(ImmutableCharTestValue::class), UsesClass(ImmutableClosedResourceTestValue::class), UsesClass(ImmutableDateTimeTestValue::class), UsesClass(ImmutableFloatTestValue::class), UsesClass(ImmutableIntegerTestValue::class), UsesClass(ImmutableIpv4TestValue::class), UsesClass(ImmutableIpv6TestValue::class), UsesClass(ImmutableNullTestValue::class), UsesClass(ImmutableObjectTestValue::class), UsesClass(ImmutableOpenResourceTestValue::class), UsesClass(ImmutableStringTestValue::class)]
 class TestValuesTest extends TestCase
 {
     /**

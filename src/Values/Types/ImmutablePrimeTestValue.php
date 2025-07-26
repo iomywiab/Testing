@@ -28,6 +28,7 @@ class ImmutablePrimeTestValue extends ImmutableIntegerTestValue
      */
     public function __construct(?string $description, int $integer, ?TagsInterface $tags = null)
     {
+        // @phpstan-ignore voku.Coalesce
         $tags ??= new Tags();
         $tags->add(TagEnum::PRIME);
 

@@ -11,11 +11,18 @@ declare(strict_types=1);
 
 namespace Iomywiab\Tests\Testing\Unit\Values\Types;
 
+use Iomywiab\Library\Testing\Values\Enums\TagEnum;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueNotImplementedException;
+use Iomywiab\Library\Testing\Values\Tags\Tags;
+use Iomywiab\Library\Testing\Values\Types\AbstractImmutableSingleTestValue;
 use Iomywiab\Library\Testing\Values\Types\ImmutableArrayTestValue;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(ImmutableArrayTestValue::class)]
+#[UsesClass(TestValueExceptionInterface::class), UsesClass(TestValueNotImplementedException::class), UsesClass(TagEnum::class), UsesClass(Tags::class), UsesClass(AbstractImmutableSingleTestValue::class)]
 class AbstractImmutableSingleTestValueTest extends TestCase
 {
     /**

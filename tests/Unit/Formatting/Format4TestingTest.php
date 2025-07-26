@@ -17,8 +17,13 @@ use Iomywiab\Library\Testing\DataTypes\Stringable4Testing;
 use Iomywiab\Library\Testing\DataTypes\StringEnum4Testing;
 use Iomywiab\Library\Testing\DataTypes\ToString4Testing;
 use Iomywiab\Library\Testing\Formatting\Format4Testing;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(Format4Testing::class)]
+#[UsesClass(Stringable4Testing::class)]
+#[UsesClass(ToString4Testing::class)]
 class Format4TestingTest extends TestCase
 {
     /**
@@ -65,13 +70,16 @@ class Format4TestingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return non-empty-list<non-empty-list<mixed>>
      * @throws \Exception
      */
     public static function provideToStringData(): array
     {
         $closedResource = \fopen('php://memory', 'rb');
-        \fclose($closedResource);
+        if (false!==$closedResource) {
+            \fclose($closedResource);
+        }
+
         return [
             [[], '[]'],
             [[1=>2,'a'=>'b'], '[1=>2, "a"=>"b"]'],

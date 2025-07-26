@@ -83,6 +83,7 @@ class Format4Testing
      */
     public static function toClassName(object $object): string
     {
+        // @phpstan-ignore return.type
         return (new \ReflectionClass($object))->getShortName();
     }
 
@@ -108,10 +109,12 @@ class Format4Testing
                 $value instanceof \DateInterval => $value->format('%R%a days, %h hours, %i minutes and %s seconds'),
                 $value instanceof \JsonSerializable => (string)\json_encode($value, \JSON_THROW_ON_ERROR),
                 $value instanceof \Throwable => $value->getMessage(),
-                \method_exists($value, 'toString') => $value->toString(),
+                // @phpstan-ignore cast.string
+                \method_exists($value, 'toString') => (string)$value->toString(),
                 $value instanceof \Stringable => (string)$value,
                 default => 'object'
             },
+            // @phpstan-ignore greaterOrEqual.alwaysTrue
             'resource' => \get_resource_type($value).(PHP_VERSION_ID >= 80000 ? ' (id:'.\get_resource_id($value).')' : ''),
             'resource (closed)' => \get_resource_type($value),
             'NULL' => 'null',

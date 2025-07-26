@@ -12,9 +12,14 @@ declare(strict_types=1);
 
 namespace Iomywiab\Tests\Testing\Unit\Logging;
 
+use Iomywiab\Library\Testing\Formatting\Format4Testing;
 use Iomywiab\Library\Testing\Logging\Logger4Testing;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(Logger4Testing::class)]
+#[UsesClass(Format4Testing::class)]
 class LoggerForTestingTest extends TestCase
 {
     /**

@@ -36,6 +36,8 @@ class ImmutableCharTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert(\is_string($this->value));
+
         return $this->value;
     }
 }

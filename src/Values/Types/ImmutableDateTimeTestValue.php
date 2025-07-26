@@ -28,12 +28,14 @@ class ImmutableDateTimeTestValue extends AbstractImmutableSingleTestValue
     public function __construct(?string $description, string|\DateTimeInterface $dateTime, ?TagsInterface $tags=null)
     {
         try {
+            // @phpstan-ignore voku.NotIdentical
             \assert((\is_string($dateTime) && ('' !== $dateTime)) || ($dateTime instanceof \DateTimeInterface));
 
             $dateTime = \is_string($dateTime)
                 ? new \DateTimeImmutable($dateTime, new \DateTimeZone('UTC'))
                 : $dateTime;
 
+            // @phpstan-ignore voku.Coalesce
             $tags ??= new Tags();
             $tags->add(TagEnum::DATETIME);
 
@@ -48,6 +50,8 @@ class ImmutableDateTimeTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert($this->value instanceof \DateTimeInterface);
+
         return $this->value->format(\DateTimeInterface::ATOM);
     }
 
@@ -56,6 +60,8 @@ class ImmutableDateTimeTestValue extends AbstractImmutableSingleTestValue
      */
     public function toInt(): int
     {
+        \assert($this->value instanceof \DateTimeInterface);
+
         return $this->value->getTimestamp();
     }
 
@@ -64,6 +70,8 @@ class ImmutableDateTimeTestValue extends AbstractImmutableSingleTestValue
      */
     public function toObject(): object
     {
+        \assert($this->value instanceof \DateTimeInterface);
+
         return $this->value;
     }
 }

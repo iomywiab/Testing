@@ -13,8 +13,12 @@ namespace Iomywiab\Tests\Testing\Unit\Values\Exceptions;
 
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueException;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueNotImplementedException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(TestValueException::class)]
+#[UsesClass(TestValueNotImplementedException::class)]
 class AllExceptionsTest extends TestCase
 {
     /**

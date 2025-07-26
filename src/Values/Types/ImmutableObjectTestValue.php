@@ -34,6 +34,8 @@ class ImmutableObjectTestValue extends AbstractImmutableSingleTestValue
      */
     public function toObject(): object
     {
+        \assert(\is_object($this->value));
+
         return $this->value;
     }
 
@@ -42,7 +44,10 @@ class ImmutableObjectTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert(\is_object($this->value));
+
         /** @noinspection PhpMultipleClassDeclarationsInspection */
+        // @phpstan-ignore return.type
         return match (true) {
             $this->value instanceof \Stringable => (string)$this->value,
             \method_exists($this->value, 'toString') => $this->value->toString(),

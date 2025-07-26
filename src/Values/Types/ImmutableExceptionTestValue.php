@@ -28,6 +28,7 @@ class ImmutableExceptionTestValue extends AbstractImmutableSingleTestValue
      */
     public function __construct(?string $description, \Throwable $object, ?TagsInterface $tags = null)
     {
+        // @phpstan-ignore voku.Coalesce
         $tags??=new Tags();
         $tags->add(TagEnum::EXCEPTION);
 
@@ -39,6 +40,8 @@ class ImmutableExceptionTestValue extends AbstractImmutableSingleTestValue
      */
     public function toObject(): object
     {
+        \assert($this->value instanceof \Throwable);
+
         return $this->value;
     }
 
@@ -47,6 +50,8 @@ class ImmutableExceptionTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
+        \assert($this->value instanceof \Throwable);
+
         return $this->value->getMessage();
     }
 }

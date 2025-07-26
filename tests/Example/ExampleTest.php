@@ -11,23 +11,28 @@ declare(strict_types=1);
 
 namespace Iomywiab\Tests\Testing\Example;
 
+use Iomywiab\Library\Testing\Formatting\Format4Testing;
 use Iomywiab\Library\Testing\Logging\Logger4Testing;
 use Iomywiab\Library\Testing\Values\DataProvider;
 use Iomywiab\Library\Testing\Values\Enums\SubstitutionEnum;
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(ExampleClass::class)]
+#[UsesClass(Format4Testing::class), UsesClass(Logger4Testing::class)]
 class ExampleTest extends TestCase
 {
     /**
-     * @return array<non-empty-string,array<non-empty-string,mixed>>
+     * @return non-empty-array<non-empty-string,mixed>
      * @throws TestValueExceptionInterface
      */
     public static function provideTestData(): array
     {
         // Create a PHPUnit compatible parameter list
-        $template = ['isValid' => true, 'key' => SubstitutionEnum::KEY, 'value' => SubstitutionEnum::VALUE];
+        $template = ['someBoolean' => true, 'key' => SubstitutionEnum::KEY, 'value' => SubstitutionEnum::VALUE];
 
         // We want to use UnitEnums ...
         $includeTags = [TagEnum::ENUM];
@@ -41,7 +46,7 @@ class ExampleTest extends TestCase
 
     /**
      * @param bool $someBoolean
-     * @param string $key
+     * @param non-empty-string $key
      * @param mixed $value
      * @return void
      * @throws \JsonException
@@ -55,6 +60,7 @@ class ExampleTest extends TestCase
         // Create a class and inject logger to that class
         $printer = new ExampleClass($logger);
 
+        $this->expectOutputRegex('/.*/');
         $printer->echoValue($key, $value);
 
         self::assertTrue($someBoolean);

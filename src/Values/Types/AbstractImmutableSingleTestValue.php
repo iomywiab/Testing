@@ -34,8 +34,11 @@ abstract class AbstractImmutableSingleTestValue implements ImmutableSingleTestVa
     public function __construct(private readonly ?string $description, protected readonly mixed $value, ?TagsInterface $tags = null)
     {
         try {
+            // @phpstan-ignore function.alreadyNarrowedType
             \assert(\is_string(static::TYPE_DESCRIPTION) && ('' !== static::TYPE_DESCRIPTION));
+            // @phpstan-ignore voku.NotIdentical, notIdentical.alwaysTrue, voku.NotIdentical
             \assert((null === $this->description) || ((null !== $this->description) && ('' !== $this->description)));
+            // @phpstan-ignore voku.NotIdentical, notIdentical.alwaysTrue
             \assert((null === $tags) || ((null !== $tags) && !$tags->isEmpty()));
 
             $this->tags = Tags::fromData($value)
@@ -119,6 +122,7 @@ abstract class AbstractImmutableSingleTestValue implements ImmutableSingleTestVa
     /**
      * @inheritDoc
      */
+    // @phpstan-ignore shipmonk.returnListNotUsed
     public function toArray(): array
     {
         return [$this->value];

@@ -36,7 +36,7 @@ interface ImmutableSingleTestValueInterface extends \Stringable
     public function getValueByTag(TagEnum $tag): mixed;
 
     /**
-     * @return array
+     * @return array<array-key,mixed>
      * @throws TestValueExceptionInterface
      */
     public function toArray(): array;

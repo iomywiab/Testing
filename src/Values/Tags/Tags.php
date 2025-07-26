@@ -22,34 +22,39 @@ class Tags implements TagsInterface
     private int $bitmask;
 
     /**
-     * @param int|TagEnum|TagsInterface|list<TagEnum>|null $bitmask
+     * @param int|TagEnum|TagsInterface|array<array-key,TagEnum>|null $bitmask
      */
     public function __construct(int|TagEnum|TagsInterface|array|null $bitmask = null)
     {
         if ((null === $bitmask) || ([] === $bitmask)) {
             $this->bitmask = self::DEFAULT_BITMASK;
 
+            // @phpstan-ignore shipmonk.returnInConstructor
             return;
         }
 
         if (\is_int($bitmask)) {
             $this->bitmask = $bitmask;
 
+            // @phpstan-ignore shipmonk.returnInConstructor
             return;
         }
 
         if ($bitmask instanceof TagEnum) {
             $this->bitmask = $bitmask->value;
 
+            // @phpstan-ignore shipmonk.returnInConstructor
             return;
         }
 
         if ($bitmask instanceof TagsInterface) {
             $this->bitmask = $bitmask->getBitmask();
 
+            // @phpstan-ignore shipmonk.returnInConstructor
             return;
         }
 
+        // @phpstan-ignore function.alreadyNarrowedType
         \assert(\is_array($bitmask));
 
         $this->bitmask = self::EMPTY_BITMASK;
