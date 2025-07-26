@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: TestValuesTest.php
  * Project: Testing
- * Modified at: 23/07/2025, 21:14
+ * Modified at: 26/07/2025, 14:37
  * Modified by: pnehls
  */
 
@@ -165,4 +165,9 @@ class TestValuesTest extends TestCase
         $this->checkArrays([$array1, $array2], $inverseTags->cases());
     }
 
+    public function testString(): void
+    {
+        $array = TestValues::get(null, [TagEnum::STRING]);
+        self::assertNotEmpty($array);
+    }
 }

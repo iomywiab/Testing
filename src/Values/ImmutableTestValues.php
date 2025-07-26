@@ -4,7 +4,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: ImmutableTestValues.php
  * Project: Testing
- * Modified at: 23/07/2025, 21:11
+ * Modified at: 26/07/2025, 14:37
  * Modified by: pnehls
  */
 
@@ -46,17 +46,16 @@ class ImmutableTestValues extends AbstractImmutableTestValues
         $allValues = self::getValues();
         foreach ($allValues as $value) {
             $tags = $value->getTags();
-            if (!$tags->intersects($excludeTags)) {
-                foreach ($tags->cases() as $tag) {
-                    $included = $includeTags->isEmpty() || $includeTags->contains($tag);
-                    if ($included) {
-                        $val = $value->getValueByTag($tag);
-                        $name = \mb_strtolower($tag->name);
-                        $title = $value->getTitle();
-                        $key = ($name === $title) ? $name : $name.' of '.$title;
-                        \assert(!\array_key_exists($key, $values), '['.$key.'] already exists');
-                        $values[$key] = $val;
-                    }
+            foreach ($tags->cases() as $tag) {
+                $included = ($includeTags->isEmpty() || $includeTags->contains($tag));
+                $excluded = ($excludeTags->contains($tag));
+                if ($included && !$excluded) {
+                    $val = $value->getValueByTag($tag);
+                    $name = \mb_strtolower($tag->name);
+                    $title = $value->getTitle();
+                    $key = ($name === $title) ? $name : $name.' of '.$title;
+                    \assert(!\array_key_exists($key, $values), '['.$key.'] already exists');
+                    $values[$key] = $val;
                 }
             }
         }
