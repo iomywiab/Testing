@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: ImmutableIpv4TestValue.php
  * Project: Testing
- * Modified at: 21/07/2025, 10:18
+ * Modified at: 29/07/2025, 19:06
  * Modified by: pnehls
  */
 
@@ -23,13 +23,13 @@ class ImmutableIpv4TestValue extends AbstractImmutableSingleTestValue
 
     /**
      * @param non-empty-string|null $description
-     * @param string $ipv6
+     * @param string $ipv4
      * @param TagsInterface|null $tags
      * @throws TestValueExceptionInterface
      */
-    public function __construct(?string $description, string $ipv6, ?TagsInterface $tags = null)
+    public function __construct(?string $description, string $ipv4, ?TagsInterface $tags = null)
     {
-        \assert(filter_var($ipv6, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4));
+        \assert(filter_var($ipv4, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4), $ipv4);
 
         // @phpstan-ignore voku.Coalesce
         $tags ??= new Tags();
@@ -37,7 +37,7 @@ class ImmutableIpv4TestValue extends AbstractImmutableSingleTestValue
         $tags->add(TagEnum::IPv4);
         $tags->add(TagEnum::IP_ADDRESS);
 
-        parent::__construct($description, $ipv6, $tags);
+        parent::__construct($description, $ipv4, $tags);
     }
 
     /**
@@ -49,7 +49,7 @@ class ImmutableIpv4TestValue extends AbstractImmutableSingleTestValue
         $result = \ip2long($this->value);
 
         if (false === $result) {
-            throw new TestValueException('Unable to convert IPv4 to integer. ipv4="' . $this->value . '"');
+            throw new TestValueException('Unable to convert IPv4 to integer. ipv4="'.$this->value.'"');
         }
 
         return $result;

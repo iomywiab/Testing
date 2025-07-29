@@ -1,9 +1,9 @@
 <?php
 /*
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
- * File name: Tags.php
+ * File name: TagsTest.php
  * Project: Testing
- * Modified at: 21/07/2025, 11:44
+ * Modified at: 29/07/2025, 16:09
  * Modified by: pnehls
  */
 
@@ -12,49 +12,17 @@ declare(strict_types=1);
 namespace Iomywiab\Tests\Testing\Unit\Tags;
 
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
+use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
 use Iomywiab\Library\Testing\Values\Tags\TagsInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Tags::class)]
+#[UsesClass(TagEnum::class)]
 class TagsTest extends TestCase
 {
-    /**
-     * @param TagsInterface $tags
-     * @param array<array-key,TagEnum> $expectedTags
-     * @return void
-     */
-    private function checkTags(TagsInterface $tags, array $expectedTags): void
-    {
-
-        $bitmask = 0;
-        foreach ($expectedTags as $expectedTag) {
-            self::assertInstanceOf(TagEnum::class, $expectedTag);
-            self::assertTrue($tags->contains($expectedTag));
-            $bitmask |= $expectedTag->value;
-        }
-        self::assertSame($bitmask, $tags->getBitmask());
-        self::assertSame(0 === \count($expectedTags), $tags->isEmpty());
-
-        $cases = $tags->cases();
-        self::assertSameSize($expectedTags, $cases);
-        //self::assertEquals($expectedTags, $cases);
-    }
-
-    /**
-     *
-     * @param TagsInterface|TagEnum|array<array-key,TagEnum>|null $parameters
-     * @param list<TagEnum> $expectedTags
-     * @return void
-     * @dataProvider provideTestDataForConstructor
-     */
-    public function testConstructor(TagsInterface|TagEnum|array|null $parameters, array $expectedTags): void
-    {
-        $tags = new Tags($parameters);
-        $this->checkTags($tags, $expectedTags);
-    }
-
     /**
      * @return non-empty-list<non-empty-list<mixed>>
      */
@@ -72,17 +40,29 @@ class TagsTest extends TestCase
         ];
     }
 
-    public function testEmpty(): void
+    /**
+     * @return non-empty-list<non-empty-list<mixed>>
+     */
+    public static function provideTestDataForFilter(): array
     {
-        $tags = new Tags();
-        self::assertTrue($tags->isEmpty());
-        self::assertSame(0, $tags->getBitmask());
-        self::assertSame([], $tags->cases());
-        foreach (TagEnum::cases() as $case) {
-            self::assertFalse($tags->contains($case));
-        }
-        self::assertFalse($tags->contains(TagEnum::INTEGER));
-        self::assertFalse($tags->contains(null));
+        return [
+            [[], [], [], []],
+            [[], [TagEnum::FLOAT], [], []],
+            [[], [], [TagEnum::INTEGER], []],
+            [[], [TagEnum::FLOAT], [TagEnum::INTEGER], []],
+
+            [[TagEnum::FLOAT], [], [], [TagEnum::FLOAT]],
+            [[TagEnum::FLOAT], [TagEnum::FLOAT], [], [TagEnum::FLOAT]],
+            [[TagEnum::FLOAT], [], [TagEnum::FLOAT], []],
+
+            [[TagEnum::FLOAT, TagEnum::ENUM], [], [], [TagEnum::ENUM, TagEnum::FLOAT]],
+            [[TagEnum::FLOAT, TagEnum::ENUM], [TagEnum::FLOAT, TagEnum::ENUM], [], [TagEnum::ENUM, TagEnum::FLOAT]],
+            [[TagEnum::FLOAT, TagEnum::ENUM], [TagEnum::ENUM], [], [TagEnum::ENUM]],
+            [[TagEnum::FLOAT, TagEnum::ENUM], [TagEnum::FLOAT], [], [TagEnum::FLOAT]],
+            [[TagEnum::FLOAT, TagEnum::ENUM], [], [TagEnum::FLOAT, TagEnum::ENUM], []],
+            [[TagEnum::FLOAT, TagEnum::ENUM], [], [TagEnum::ENUM], [TagEnum::FLOAT]],
+            [[TagEnum::FLOAT, TagEnum::ENUM], [], [TagEnum::FLOAT], [TagEnum::ENUM]],
+        ];
     }
 
     public function testAddRemove(): void
@@ -109,6 +89,53 @@ class TagsTest extends TestCase
     }
 
     /**
+     * @param TagsInterface $tags
+     * @param array<array-key,TagEnum> $expectedTags
+     * @return void
+     */
+    private function checkTags(TagsInterface $tags, array $expectedTags): void
+    {
+
+        $bitmask = 0;
+        foreach ($expectedTags as $expectedTag) {
+            self::assertInstanceOf(TagEnum::class, $expectedTag);
+            self::assertTrue($tags->contains($expectedTag));
+            $bitmask |= $expectedTag->value;
+        }
+        self::assertSame($bitmask, $tags->getBitmask());
+        self::assertSame(0 === \count($expectedTags), $tags->isEmpty());
+
+        $cases = $tags->cases();
+        self::assertSameSize($expectedTags, $cases);
+        //self::assertEquals($expectedTags, $cases);
+    }
+
+    /**
+     * @param TagsInterface|TagEnum|array<array-key,TagEnum>|null $parameters
+     * @param list<TagEnum> $expectedTags
+     * @return void
+     * @dataProvider provideTestDataForConstructor
+     */
+    public function testConstructor(TagsInterface|TagEnum|array|null $parameters, array $expectedTags): void
+    {
+        $tags = new Tags($parameters);
+        $this->checkTags($tags, $expectedTags);
+    }
+
+    public function testEmpty(): void
+    {
+        $tags = new Tags();
+        self::assertTrue($tags->isEmpty());
+        self::assertSame(0, $tags->getBitmask());
+        self::assertSame([], $tags->cases());
+        foreach (TagEnum::cases() as $case) {
+            self::assertFalse($tags->contains($case));
+        }
+        self::assertFalse($tags->contains(TagEnum::INTEGER));
+        self::assertFalse($tags->contains(null));
+    }
+
+    /**
      * @param list<TagEnum> $tags
      * @param list<TagEnum> $includedTags
      * @param list<TagEnum> $excludedTags
@@ -125,30 +152,48 @@ class TagsTest extends TestCase
     }
 
     /**
-     * @return non-empty-list<non-empty-list<mixed>>
+     * @return void
+     * @throws TestValueExceptionInterface
      */
-    public static function provideTestDataForFilter(): array
+    public function testFromData(): void
     {
-        return [
-            [[], [], [], []],
-            [[], [TagEnum::FLOAT], [], []],
-            [[], [], [TagEnum::INTEGER], []],
-            [[], [TagEnum::FLOAT], [TagEnum::INTEGER], []],
-
-            [[TagEnum::FLOAT], [], [], [TagEnum::FLOAT]],
-            [[TagEnum::FLOAT], [TagEnum::FLOAT], [], [TagEnum::FLOAT]],
-            [[TagEnum::FLOAT], [], [TagEnum::FLOAT], []],
-
-            [[TagEnum::FLOAT,TagEnum::ENUM], [], [], [TagEnum::ENUM,TagEnum::FLOAT]],
-            [[TagEnum::FLOAT,TagEnum::ENUM], [TagEnum::FLOAT,TagEnum::ENUM], [], [TagEnum::ENUM,TagEnum::FLOAT]],
-            [[TagEnum::FLOAT,TagEnum::ENUM], [TagEnum::ENUM], [], [TagEnum::ENUM]],
-            [[TagEnum::FLOAT,TagEnum::ENUM], [TagEnum::FLOAT], [], [TagEnum::FLOAT]],
-            [[TagEnum::FLOAT,TagEnum::ENUM], [], [TagEnum::FLOAT,TagEnum::ENUM], []],
-            [[TagEnum::FLOAT,TagEnum::ENUM], [], [TagEnum::ENUM], [TagEnum::FLOAT]],
-            [[TagEnum::FLOAT,TagEnum::ENUM], [], [TagEnum::FLOAT], [TagEnum::ENUM]],
-        ];
+        $tags = Tags::fromData('string');
+        self::assertTrue($tags->contains(TagEnum::STRING));
+        self::assertTrue($tags->contains(TagEnum::STRING_LOWER));
+        self::assertFalse($tags->contains(TagEnum::INTEGER));
+        self::assertFalse($tags->contains(TagEnum::EMPTY));
     }
 
+    /**
+     * @return void
+     */
+    public function testIntersections(): void
+    {
+        $intFloat = new Tags([TagEnum::INTEGER, TagEnum::FLOAT]);
+        $intString = new Tags([TagEnum::INTEGER, TagEnum::STRING]);
+        $floatEnum = new Tags([TagEnum::FLOAT, TagEnum::ENUM]);
+        self::assertTrue($intFloat->intersects($intString));
+        self::assertTrue($intString->intersects($intFloat));
+        self::assertTrue($intFloat->intersects($floatEnum));
+        self::assertTrue($floatEnum->intersects($intFloat));
+        self::assertFalse($intString->intersects($floatEnum));
+        self::assertFalse($floatEnum->intersects($intString));
+        self::assertFalse($floatEnum->intersects(null));
+    }
+
+    /**
+     * @return void
+     */
+    public function testInverse(): void
+    {
+        $tags = new Tags([]);
+        $inverse = $tags->getInverse();
+        self::assertSameSize($inverse->cases(), TagEnum::cases());
+    }
+
+    /**
+     * @return void
+     */
     public function testStringable(): void
     {
         $tags = new Tags([TagEnum::ENUM, TagEnum::FLOAT]);

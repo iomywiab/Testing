@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: Format4TestingTest.php
  * Project: Testing
- * Modified at: 21/07/2025, 10:26
+ * Modified at: 29/07/2025, 15:46
  * Modified by: pnehls
  */
 
@@ -27,62 +27,19 @@ use PHPUnit\Framework\TestCase;
 class Format4TestingTest extends TestCase
 {
     /**
-     * @return void
-     */
-    public function testToClassName(): void
-    {
-        self::assertSame('stdClass', Format4Testing::toClassName(new \stdClass()));
-        self::assertSame('Format4TestingTest', Format4Testing::toClassName($this));
-    }
-
-    /**
-     * @return void
-     * @throws \JsonException
-     */
-    public function testToTableString(): void
-    {
-        $array=[
-            [1,11],
-            [22,2]
-        ];
-        $expected = "1  11\n22 2 ";
-        self::assertSame($expected, Format4Testing::toTableString($array));
-
-        $array=[
-            [1,'12345678901234567890123456789012345678901234567890'],
-            [22,2]
-        ];
-        $expected = "1  \"123456789012345678901234567890123456...\n"
-                  . "22 2                                       ";
-        self::assertSame($expected, Format4Testing::toTableString($array));
-    }
-
-    /**
-     * @param mixed $value
-     * @param string $expected
-     * @return void
-     * @throws \JsonException
-     * @dataProvider provideToStringData
-     */
-    public function testToString(mixed $value, string $expected): void
-    {
-        self::assertSame($expected, Format4Testing::toString($value));
-    }
-
-    /**
      * @return non-empty-list<non-empty-list<mixed>>
      * @throws \Exception
      */
     public static function provideToStringData(): array
     {
         $closedResource = \fopen('php://memory', 'rb');
-        if (false!==$closedResource) {
+        if (false !== $closedResource) {
             \fclose($closedResource);
         }
 
         return [
             [[], '[]'],
-            [[1=>2,'a'=>'b'], '[1=>2, "a"=>"b"]'],
+            [[1 => 2, 'a' => 'b'], '[1=>2, "a"=>"b"]'],
             [true, 'true'],
             [false, 'false'],
             [-1.2, '-1.2'],
@@ -105,5 +62,58 @@ class Format4TestingTest extends TestCase
             [null, 'null'],
             [$closedResource, 'Unknown'],
         ];
+    }
+
+    /**
+     * @return void
+     * @throws \JsonException
+     */
+    public function testOpenResource(): void
+    {
+        $resource = \fopen('php://memory', 'rb');
+        self::assertStringStartsWith('stream (id:', Format4Testing::toString($resource));
+    }
+
+    /**
+     * @return void
+     */
+    public function testToClassName(): void
+    {
+        self::assertSame('stdClass', Format4Testing::toClassName(new \stdClass()));
+        self::assertSame('Format4TestingTest', Format4Testing::toClassName($this));
+    }
+
+    /**
+     * @param mixed $value
+     * @param string $expected
+     * @return void
+     * @throws \JsonException
+     * @dataProvider provideToStringData
+     */
+    public function testToString(mixed $value, string $expected): void
+    {
+        self::assertSame($expected, Format4Testing::toString($value));
+    }
+
+    /**
+     * @return void
+     * @throws \JsonException
+     */
+    public function testToTableString(): void
+    {
+        $array = [
+            [1, 11],
+            [22, 2]
+        ];
+        $expected = "1  11\n22 2 ";
+        self::assertSame($expected, Format4Testing::toTableString($array));
+
+        $array = [
+            [1, '12345678901234567890123456789012345678901234567890'],
+            [22, 2]
+        ];
+        $expected = "1  \"123456789012345678901234567890123456...\n"
+            ."22 2                                       ";
+        self::assertSame($expected, Format4Testing::toTableString($array));
     }
 }

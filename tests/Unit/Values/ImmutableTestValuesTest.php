@@ -1,9 +1,9 @@
 <?php
 /*
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
- * File name: TestValuesTest.php
+ * File name: ImmutableTestValuesTest.php
  * Project: Testing
- * Modified at: 29/07/2025, 19:12
+ * Modified at: 29/07/2025, 21:08
  * Modified by: pnehls
  */
 
@@ -17,7 +17,6 @@ use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
 use Iomywiab\Library\Testing\Values\Filter;
 use Iomywiab\Library\Testing\Values\ImmutableTestValues;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
-use Iomywiab\Library\Testing\Values\TestValues;
 use Iomywiab\Library\Testing\Values\Types\AbstractImmutableSingleTestValue;
 use Iomywiab\Library\Testing\Values\Types\ImmutableArrayTestValue;
 use Iomywiab\Library\Testing\Values\Types\ImmutableBooleanTestValue;
@@ -32,17 +31,18 @@ use Iomywiab\Library\Testing\Values\Types\ImmutableIpv6TestValue;
 use Iomywiab\Library\Testing\Values\Types\ImmutableNullTestValue;
 use Iomywiab\Library\Testing\Values\Types\ImmutableObjectTestValue;
 use Iomywiab\Library\Testing\Values\Types\ImmutableOpenResourceTestValue;
+use Iomywiab\Library\Testing\Values\Types\ImmutablePrimeTestValue;
 use Iomywiab\Library\Testing\Values\Types\ImmutableStringTestValue;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(TestValues::class)]
-#[UsesClass(ImmutableTestValues::class)]
+#[CoversClass(ImmutableTestValues::class)]
 #[UsesClass(Tags::class), UsesClass(AbstractImmutableSingleTestValue::class), UsesClass(Format4Testing::class), UsesClass(TagEnum::class), UsesClass(ImmutableTestValues::class), UsesClass(ImmutableArrayTestValue::class), UsesClass(ImmutableBoolStringTestValue::class), UsesClass(ImmutableBooleanTestValue::class), UsesClass(ImmutableCharTestValue::class), UsesClass(ImmutableClosedResourceTestValue::class), UsesClass(ImmutableDateTimeTestValue::class), UsesClass(ImmutableFloatTestValue::class), UsesClass(ImmutableIntegerTestValue::class), UsesClass(ImmutableIpv4TestValue::class), UsesClass(ImmutableIpv6TestValue::class), UsesClass(ImmutableNullTestValue::class), UsesClass(ImmutableObjectTestValue::class), UsesClass(ImmutableOpenResourceTestValue::class)]
 #[UsesClass(Filter::class)]
 #[UsesClass(ImmutableStringTestValue::class)]
-class TestValuesTest extends TestCase
+#[UsesClass(ImmutablePrimeTestValue::class)]
+class ImmutableTestValuesTest extends TestCase
 {
     /**
      * @return void
@@ -51,18 +51,20 @@ class TestValuesTest extends TestCase
      */
     public function testAll(): void
     {
+        $testValues = new ImmutableTestValues();
+
         $allTags = TagEnum::cases();
         $this->checkArrays([
-            TestValues::get(),
-            TestValues::get($allTags),
-            TestValues::getWithout([])
+            $testValues->get(),
+            $testValues->get($allTags),
+            $testValues->getWithout([])
         ], $allTags);
 
         $inverseTags = (new Tags($allTags))->getInverse()->cases();
         self::assertEmpty($inverseTags);
         $this->checkArrays([
-            TestValues::get(null, $allTags),
-            TestValues::getWithout($allTags)
+            $testValues->get(null, $allTags),
+            $testValues->getWithout($allTags)
         ], $inverseTags);
     }
 
@@ -103,10 +105,28 @@ class TestValuesTest extends TestCase
      * @return void
      * @throws TestValueExceptionInterface
      */
+    public function testCache(): void
+    {
+        $testValues = new ImmutableTestValues();
+
+        $values1 = $testValues->getValues([TagEnum::STRING]);
+        $values2 = $testValues->getValues([TagEnum::STRING]);
+        self::assertSame($values1, $values2);
+
+        $strings1 = $testValues->strings();
+        $strings2 = $testValues->strings();
+        self::assertSame($strings1, $strings2);
+        self::assertNotSame($strings1, $values1);
+    }
+
+    /**
+     * @return void
+     * @throws TestValueExceptionInterface
+     */
     public function testCompleteness(): void
     {
         $notFound = TagEnum::cases();
-        $values = TestValues::getValues();
+        $values = (new ImmutableTestValues())->getValues();
         foreach ($values as $value) {
             $tags = $value->getTags();
             foreach ($tags->cases() as $tag) {
@@ -127,19 +147,20 @@ class TestValuesTest extends TestCase
      */
     public function testSingleTags(): void
     {
-        $this->checkSingleTag(TestValues::arrays(), TagEnum::ARRAY);
-        $this->checkSingleTag(TestValues::booleans(), TagEnum::BOOLEAN);
-        $this->checkSingleTag(TestValues::empties(), TagEnum::EMPTY);
-        $this->checkSingleTag(TestValues::floats(), TagEnum::FLOAT);
-        $this->checkSingleTag(TestValues::enums(), TagEnum::ENUM);
-        $this->checkSingleTag(TestValues::integers(), TagEnum::INTEGER);
-        $this->checkSingleTag(TestValues::ipAddresses(), TagEnum::IP_ADDRESS);
-        $this->checkSingleTag(TestValues::ipv4Addresses(), TagEnum::IPv4);
-        $this->checkSingleTag(TestValues::ipv6Addresses(), TagEnum::IPv6);
-        $this->checkSingleTag(TestValues::nulls(), TagEnum::NULL);
-        $this->checkSingleTag(TestValues::resources(), TagEnum::RESOURCE);
-        $this->checkSingleTag(TestValues::objects(), TagEnum::OBJECT);
-        $this->checkSingleTag(TestValues::strings(), TagEnum::STRING);
+        $testValues = new ImmutableTestValues();
+        $this->checkSingleTag($testValues->arrays(), TagEnum::ARRAY);
+        $this->checkSingleTag($testValues->booleans(), TagEnum::BOOLEAN);
+        $this->checkSingleTag($testValues->empties(), TagEnum::EMPTY);
+        $this->checkSingleTag($testValues->floats(), TagEnum::FLOAT);
+        $this->checkSingleTag($testValues->enums(), TagEnum::ENUM);
+        $this->checkSingleTag($testValues->integers(), TagEnum::INTEGER);
+        $this->checkSingleTag($testValues->ipAddresses(), TagEnum::IP_ADDRESS);
+        $this->checkSingleTag($testValues->ipv4Addresses(), TagEnum::IPv4);
+        $this->checkSingleTag($testValues->ipv6Addresses(), TagEnum::IPv6);
+        $this->checkSingleTag($testValues->nulls(), TagEnum::NULL);
+        $this->checkSingleTag($testValues->resources(), TagEnum::RESOURCE);
+        $this->checkSingleTag($testValues->objects(), TagEnum::OBJECT);
+        $this->checkSingleTag($testValues->strings(), TagEnum::STRING);
     }
 
     /**
@@ -151,21 +172,23 @@ class TestValuesTest extends TestCase
      */
     private function checkSingleTag(array $values, TagEnum $enum): void
     {
+        $testValues = new ImmutableTestValues();
+
         $tags = new Tags($enum);
         $inverseTags = $tags->getInverse();
 
-        $array1 = TestValues::get($enum);
+        $array1 = $testValues->get($enum);
         $this->checkArrays([$values, $array1], [$enum]);
 
-        $array1 = TestValues::get(null, $inverseTags);
-        $array2 = TestValues::getWithout($inverseTags);
+        $array1 = $testValues->get(null, $inverseTags);
+        $array2 = $testValues->getWithout($inverseTags);
         $this->checkArrays([$array1, $array2], [$enum]);
 
-        $array1 = TestValues::get($inverseTags, $enum);
+        $array1 = $testValues->get($inverseTags, $enum);
         $this->checkArrays([$array1], $inverseTags->cases());
 
-        $array1 = TestValues::get(null, $enum);
-        $array2 = TestValues::getWithout($enum);
+        $array1 = $testValues->get(null, $enum);
+        $array2 = $testValues->getWithout($enum);
         $this->checkArrays([$array1, $array2], $inverseTags->cases());
     }
 
@@ -175,7 +198,8 @@ class TestValuesTest extends TestCase
      */
     public function testString(): void
     {
-        $array = TestValues::get(null, [TagEnum::STRING]);
+        $testValues = new ImmutableTestValues();
+        $array = $testValues->get(null, [TagEnum::STRING]);
         self::assertNotEmpty($array);
     }
 }

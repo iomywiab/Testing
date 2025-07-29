@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: DataProviderTest.php
  * Project: Testing
- * Modified at: 23/07/2025, 21:18
+ * Modified at: 29/07/2025, 17:45
  * Modified by: pnehls
  */
 
@@ -11,13 +11,14 @@ declare(strict_types=1);
 
 namespace Iomywiab\Tests\Testing\Unit\Values;
 
-use Iomywiab\Library\Testing\Values\AbstractImmutableTestValues;
 use Iomywiab\Library\Testing\Values\DataProvider;
 use Iomywiab\Library\Testing\Values\Enums\SubstitutionEnum;
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
+use Iomywiab\Library\Testing\Values\Filter;
 use Iomywiab\Library\Testing\Values\ImmutableTestValues;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
+use Iomywiab\Library\Testing\Values\TestValues;
 use Iomywiab\Library\Testing\Values\Types\AbstractImmutableSingleTestValue;
 use Iomywiab\Library\Testing\Values\Types\ImmutableIntegerTestValue;
 use Iomywiab\Library\Testing\Values\Types\ImmutableNullTestValue;
@@ -26,7 +27,16 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(DataProvider::class)]
-#[UsesClass(SubstitutionEnum::class), UsesClass(TagEnum::class), UsesClass(TestValueExceptionInterface::class), UsesClass(AbstractImmutableTestValues::class), UsesClass(ImmutableTestValues::class), UsesClass(Tags::class), UsesClass(AbstractImmutableSingleTestValue::class), UsesClass(ImmutableIntegerTestValue::class), UsesClass(ImmutableNullTestValue::class)]
+#[UsesClass(SubstitutionEnum::class)]
+#[UsesClass(TestValues::class)]
+#[UsesClass(TagEnum::class)]
+#[UsesClass(TestValueExceptionInterface::class)]
+#[UsesClass(ImmutableTestValues::class)]
+#[UsesClass(Tags::class)]
+#[UsesClass(AbstractImmutableSingleTestValue::class)]
+#[UsesClass(ImmutableIntegerTestValue::class)]
+#[UsesClass(ImmutableNullTestValue::class)]
+#[UsesClass(Filter::class)]
 class DataProviderTest extends TestCase
 {
     /**
@@ -46,12 +56,12 @@ class DataProviderTest extends TestCase
 
         $values = DataProvider::byTemplate(['one' => true, 'two' => 1, 'three' => SubstitutionEnum::VALUE, 'four' => 'test'], TagEnum::PRIME);
         $expected = [
-            'prime of prime: (smallest signed 1 byte prime number) -127' => ['one' => true, 'two' => 1, 'three' => -127, 'four' => 'test'],
-            'prime of prime: (negative prime number) -7'                 => ['one' => true, 'two' => 1, 'three' => -7, 'four' => 'test'],
-            'prime of prime: (greatest even negative prime number) -2'   => ['one' => true, 'two' => 1, 'three' => -2, 'four' => 'test'],
-            'prime of prime: (smallest even positive prime number) 2'    => ['one' => true, 'two' => 1, 'three' => 2, 'four' => 'test'],
-            'prime of prime: (positive prime number) 7'                  => ['one' => true, 'two' => 1, 'three' => 7, 'four' => 'test'],
-            'prime of prime: (signed 4 byte prime number) 2147483647'    => ['one' => true, 'two' => 1, 'three' => 2147483647, 'four' => 'test'],
+            'prime of prime(smallest signed 1 byte prime number): -127' => ['one' => true, 'two' => 1, 'three' => -127, 'four' => 'test'],
+            'prime of prime(negative prime number): -7'                 => ['one' => true, 'two' => 1, 'three' => -7, 'four' => 'test'],
+            'prime of prime(greatest even negative prime number): -2'   => ['one' => true, 'two' => 1, 'three' => -2, 'four' => 'test'],
+            'prime of prime(smallest even positive prime number): 2'    => ['one' => true, 'two' => 1, 'three' => 2, 'four' => 'test'],
+            'prime of prime(positive prime number): 7'                  => ['one' => true, 'two' => 1, 'three' => 7, 'four' => 'test'],
+            'prime of prime(signed 4 byte prime number): 2147483647'    => ['one' => true, 'two' => 1, 'three' => 2147483647, 'four' => 'test'],
         ];
 
         self::assertEquals($expected, $values);

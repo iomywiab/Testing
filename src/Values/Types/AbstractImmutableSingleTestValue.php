@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: AbstractImmutableSingleTestValue.php
  * Project: Testing
- * Modified at: 21/07/2025, 10:22
+ * Modified at: 29/07/2025, 20:52
  * Modified by: pnehls
  */
 
@@ -52,12 +52,11 @@ abstract class AbstractImmutableSingleTestValue implements ImmutableSingleTestVa
 
     /**
      * @inheritDoc
+     * @throws TestValueExceptionInterface
      */
-    public function getTitle(): string
+    public function __toString(): string
     {
-        $description = (null === $this->description) ? '' : '('.$this->description.') ';
-
-        return static::TYPE_DESCRIPTION.': '.$description.$this->toString();
+        return $this->toString();
     }
 
     /**
@@ -71,6 +70,16 @@ abstract class AbstractImmutableSingleTestValue implements ImmutableSingleTestVa
     /**
      * @inheritDoc
      */
+    public function getTitle(): string
+    {
+        $description = (null === $this->description) ? '' : '('.$this->description.')';
+
+        return static::TYPE_DESCRIPTION.$description.': '.$this->toString();
+    }
+
+    /**
+     * @inheritDoc
+     */
     final public function getValueByTag(TagEnum $tag): mixed
     {
         /** @noinspection PhpDuplicateMatchArmBodyInspection */
@@ -79,16 +88,16 @@ abstract class AbstractImmutableSingleTestValue implements ImmutableSingleTestVa
             TagEnum::BOOLEAN => $this->toBool(),
             TagEnum::BOOL_STRING => $this->toString(),
             TagEnum::CAPITAL_LETTER => $this->toString(),
-            TagEnum::CHAR=>$this->toString(),
-            TagEnum::CLOSED_RESOURCE=>$this->toRawValue(),
+            TagEnum::CHAR => $this->toString(),
+            TagEnum::CLOSED_RESOURCE => $this->toRawValue(),
             TagEnum::DATETIME => $this->toObject(),
             TagEnum::DIGIT => $this->toString(),
             TagEnum::DOMAIN => $this->toString(),
             TagEnum::EMAIL => $this->toString(),
-            TagEnum::EMPTY=>$this->toRawValue(),
-            TagEnum::ENUM=>$this->toObject(),
-            TagEnum::ENUM_INT=>$this->toObject(),
-            TagEnum::ENUM_STRING=>$this->toObject(),
+            TagEnum::EMPTY => $this->toRawValue(),
+            TagEnum::ENUM => $this->toObject(),
+            TagEnum::ENUM_INT => $this->toObject(),
+            TagEnum::ENUM_STRING => $this->toObject(),
             TagEnum::EXCEPTION => $this->toObject(),
             TagEnum::FLOAT => $this->toFloat(),
             TagEnum::FLOAT_NEGATIVE => $this->toFloat(),
@@ -104,7 +113,7 @@ abstract class AbstractImmutableSingleTestValue implements ImmutableSingleTestVa
             TagEnum::IPv6 => \is_int($this->value) ? $this->toInt() : $this->toString(),
             TagEnum::LETTER => $this->toString(),
             TagEnum::MAC => $this->toString(),
-            TagEnum::NULL=>$this->toRawValue(),
+            TagEnum::NULL => $this->toRawValue(),
             TagEnum::OBJECT => $this->toObject(),
             TagEnum::PRIME => \is_int($this->value) ? $this->toInt() : $this->toString(),
             TagEnum::RESOURCE => $this->toResource(),
@@ -113,7 +122,7 @@ abstract class AbstractImmutableSingleTestValue implements ImmutableSingleTestVa
             TagEnum::STRING_FLOAT => $this->toString(),
             TagEnum::STRING_INTEGER => $this->toString(),
             TagEnum::STRING_LOWER => $this->toString(),
-            TagEnum::STRING_NUMERIC=> $this->toString(),
+            TagEnum::STRING_NUMERIC => $this->toString(),
             TagEnum::STRING_UPPER => $this->toString(),
             TagEnum::URL => $this->toString(),
         };
@@ -139,6 +148,22 @@ abstract class AbstractImmutableSingleTestValue implements ImmutableSingleTestVa
     /**
      * @inheritDoc
      */
+    public function toRawValue(): mixed
+    {
+        return $this->value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toObject(): object
+    {
+        throw new TestValueNotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function toFloat(): float
     {
         throw new TestValueNotImplementedException(__METHOD__);
@@ -155,33 +180,8 @@ abstract class AbstractImmutableSingleTestValue implements ImmutableSingleTestVa
     /**
      * @inheritDoc
      */
-    public function toObject(): object
-    {
-        throw new TestValueNotImplementedException(__METHOD__);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function toResource(): mixed
     {
         throw new TestValueNotImplementedException(__METHOD__);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function toRawValue(): mixed
-    {
-        return $this->value;
-    }
-
-    /**
-     * @inheritDoc
-     * @throws TestValueExceptionInterface
-     */
-    public function __toString(): string
-    {
-        return $this->toString();
     }
 }

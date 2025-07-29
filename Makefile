@@ -3,7 +3,7 @@ SHELL := bash
 OS := $(shell uname)
 DEFAULT_CONTAINER := php-8.1-debug
 #PROJECT_POSTFIX=iomywiab-enums
-EXPECTED_VERSION := 1.1.0
+EXPECTED_VERSION := 1.2.0
 VERSION_URL := https://raw.githubusercontent.com/iomywiab/ProjectTemplate/refs/heads/main/version.txt
 
 
@@ -83,4 +83,9 @@ cov-badge: ## create a coverage badge from existing coverage file (tmp/phpstorm/
 		else echo "red"; fi \
 	); \
 	curl -s "https://img.shields.io/badge/Line_coverage-$$COVERAGE_INT%25-$$COLOR.svg" -o docs/coverage-badge.svg; \
-	echo "✅ Badge stored as docs/coverage-badge.svg"
+	echo "✅ Line coverage badge stored as docs/coverage-badge.svg"
+	@TIMESTAMP_MS=$$(xmllint --xpath 'string(/coverage/@timestamp)' tmp/phpstorm/coverage/cobertura.xml); \
+	DATE=$$(date -u -r $$TIMESTAMP_MS "+%Y--%m--%d"); \
+	echo "https://img.shields.io/badge/Line_coverage-$$DATE-blue.svg" -o docs/coverage-date-badge.svg; \
+	curl -s "https://img.shields.io/badge/Line_coverage-$$DATE-blue.svg" -o docs/coverage-date-badge.svg; \
+	echo "✅ coverage-date-badge.svg created for $$DATE"

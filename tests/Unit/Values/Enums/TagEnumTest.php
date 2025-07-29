@@ -4,7 +4,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: TagEnumTest.php
  * Project: Testing
- * Modified at: 20/07/2025, 23:00
+ * Modified at: 29/07/2025, 15:42
  * Modified by: pnehls
  */
 
@@ -22,17 +22,6 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(TagEnum::class)]
 class TagEnumTest extends TestCase
 {
-    /**
-     * @param mixed $data
-     * @param TagEnum $enum
-     * @return void
-     * @dataProvider provideTestData
-     */
-    public function testFromData(mixed $data, TagEnum $enum): void
-    {
-        self::assertEquals($enum, TagEnum::fromData($data));
-    }
-
     /**
      * @return non-empty-list<non-empty-list<mixed>>
      */
@@ -55,18 +44,6 @@ class TagEnumTest extends TestCase
             [$closedMemory, TagEnum::CLOSED_RESOURCE],
             ['abc', TagEnum::STRING],
         ];
-    }
-
-    /**
-     * @param bool $isValid
-     * @param TagEnum $tag
-     * @param mixed $value
-     * @return void
-     * @dataProvider provideTestDataForIsMine
-     */
-    public function testIsMine(bool $isValid, TagEnum $tag, mixed $value): void
-    {
-        self::assertSame($isValid, $tag->isMine($value), $tag->name);
     }
 
     /**
@@ -108,7 +85,11 @@ class TagEnumTest extends TestCase
             [true, TagEnum::MAC, '00:1A:2B:3C:4D:5E'],
             [true, TagEnum::NULL, null],
             [true, TagEnum::OBJECT, new \stdClass()],
+            [false, TagEnum::PRIME, -1],
+            [true, TagEnum::PRIME, 3],
+            [false, TagEnum::PRIME, 6],
             [true, TagEnum::PRIME, 7],
+            [false, TagEnum::PRIME, 35],
             [true, TagEnum::RESOURCE, STDOUT],
             [true, TagEnum::SMALL_LETTER, 'a'],
             [true, TagEnum::STRING, 'abc'],
@@ -120,5 +101,28 @@ class TagEnumTest extends TestCase
             [true, TagEnum::URL, 'https://example.org'],
 
         ];
+    }
+
+    /**
+     * @param mixed $data
+     * @param TagEnum $enum
+     * @return void
+     * @dataProvider provideTestData
+     */
+    public function testFromData(mixed $data, TagEnum $enum): void
+    {
+        self::assertEquals($enum, TagEnum::fromData($data));
+    }
+
+    /**
+     * @param bool $isValid
+     * @param TagEnum $tag
+     * @param mixed $value
+     * @return void
+     * @dataProvider provideTestDataForIsMine
+     */
+    public function testIsMine(bool $isValid, TagEnum $tag, mixed $value): void
+    {
+        self::assertSame($isValid, $tag->isMine($value), $tag->name);
     }
 }

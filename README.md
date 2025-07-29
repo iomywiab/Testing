@@ -3,6 +3,7 @@
 This library contains some helpers for testing
 
 ![coverage](docs/coverage-badge.svg)
+![coverage](docs/coverage-date-badge.svg)
 
 ## Quickstart
 
