@@ -2,6 +2,8 @@
 
 This library contains some helpers for testing
 
+![coverage](docs/coverage-badge.svg)
+
 ## Quickstart
 
 The main purpose of this library is to provide test values.
@@ -13,11 +15,11 @@ The main purpose of this library is to provide test values.
 
 Test values contain edge case values, such as prime numbers, large or tiny floats, strings containing URLs, MAC addresses, IPv6 addresses, and so on.
 
-All these values might be used as input parameters in your tests. 
+All these values might be used as input parameters in your tests.
 
 ### Example
 
-There is an example with 2 files in  
+There is an example with 2 files in
 
-1. /tests/Example/[ExampleClass.php](./tests/Example/ExampleClass.php) 
+1. /tests/Example/[ExampleClass.php](./tests/Example/ExampleClass.php)
 2. /tests/Example/[ExampleTest.php](./tests/Example/ExampleTest.php) 
