@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: ImmutableTestValuesTest.php
  * Project: Testing
- * Modified at: 29/07/2025, 21:08
+ * Modified at: 30/07/2025, 10:49
  * Modified by: pnehls
  */
 
@@ -17,30 +17,30 @@ use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
 use Iomywiab\Library\Testing\Values\Filter;
 use Iomywiab\Library\Testing\Values\ImmutableTestValues;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
-use Iomywiab\Library\Testing\Values\Types\AbstractImmutableSingleTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableArrayTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableBooleanTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableBoolStringTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableCharTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableClosedResourceTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableDateTimeTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableFloatTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableIntegerTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableIpv4TestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableIpv6TestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableNullTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableObjectTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableOpenResourceTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutablePrimeTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableStringTestValue;
+use Iomywiab\Library\Testing\Values\ValueObjects\AbstractImmutableTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableArrayTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableBooleanTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableBoolStringTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableCharTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableClosedResourceTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableDateTimeTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableFloatTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableIntegerTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableIpv4TestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableIpv6TestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableNullTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableObjectTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableOpenResourceTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutablePrimeTestValue;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableStringTestValueObject;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ImmutableTestValues::class)]
-#[UsesClass(Tags::class), UsesClass(AbstractImmutableSingleTestValue::class), UsesClass(Format4Testing::class), UsesClass(TagEnum::class), UsesClass(ImmutableTestValues::class), UsesClass(ImmutableArrayTestValue::class), UsesClass(ImmutableBoolStringTestValue::class), UsesClass(ImmutableBooleanTestValue::class), UsesClass(ImmutableCharTestValue::class), UsesClass(ImmutableClosedResourceTestValue::class), UsesClass(ImmutableDateTimeTestValue::class), UsesClass(ImmutableFloatTestValue::class), UsesClass(ImmutableIntegerTestValue::class), UsesClass(ImmutableIpv4TestValue::class), UsesClass(ImmutableIpv6TestValue::class), UsesClass(ImmutableNullTestValue::class), UsesClass(ImmutableObjectTestValue::class), UsesClass(ImmutableOpenResourceTestValue::class)]
+#[UsesClass(Tags::class), UsesClass(AbstractImmutableTestValueObject::class), UsesClass(Format4Testing::class), UsesClass(TagEnum::class), UsesClass(ImmutableTestValues::class), UsesClass(ImmutableArrayTestValueObject::class), UsesClass(ImmutableBoolStringTestValueObject::class), UsesClass(ImmutableBooleanTestValueObject::class), UsesClass(ImmutableCharTestValueObject::class), UsesClass(ImmutableClosedResourceTestValueObject::class), UsesClass(ImmutableDateTimeTestValueObject::class), UsesClass(ImmutableFloatTestValueObject::class), UsesClass(ImmutableIntegerTestValueObject::class), UsesClass(ImmutableIpv4TestValueObject::class), UsesClass(ImmutableIpv6TestValueObject::class), UsesClass(ImmutableNullTestValueObject::class), UsesClass(ImmutableObjectTestValueObject::class), UsesClass(ImmutableOpenResourceTestValueObject::class)]
 #[UsesClass(Filter::class)]
-#[UsesClass(ImmutableStringTestValue::class)]
+#[UsesClass(ImmutableStringTestValueObject::class)]
 #[UsesClass(ImmutablePrimeTestValue::class)]
 class ImmutableTestValuesTest extends TestCase
 {
@@ -69,7 +69,7 @@ class ImmutableTestValuesTest extends TestCase
     }
 
     /**
-     * @param list<array<non-empty-string,mixed>> $arrays
+     * @param list<\Generator<non-empty-string,mixed>> $arrays
      * @param list<TagEnum> $tags
      * @return void
      * @throws \JsonException
@@ -77,10 +77,13 @@ class ImmutableTestValuesTest extends TestCase
     private function checkArrays(array $arrays, array $tags): void
     {
         self::assertNotEmpty($arrays);
-        $firstArray = null;
+        $firstArraySize = null;
         foreach ($arrays as $keyofArray => $array) {
-            self::assertIsArray($array, $keyofArray.'=>'.Format4Testing::toString($array));
+            // @phpstan-ignore staticMethod.alreadyNarrowedType
+            self::assertInstanceOf(\Generator::class, $array, 'key='.$keyofArray);
+            $arraySize = 0;
             foreach ($array as $key => $value) {
+                $arraySize++;
                 self::assertIsString($key);
                 if ('resource (closed)' === \gettype($value)) {
                     continue;
@@ -94,29 +97,11 @@ class ImmutableTestValuesTest extends TestCase
                 }
                 self::assertTrue($isFound, $keyofArray.'=>'.\gettype($value).':'.Format4Testing::toString($value).', '.Format4Testing::toString($tags));
             }
-            if (null === $firstArray) {
-                $firstArray = $array;
+            if (null === $firstArraySize) {
+                $firstArraySize = $arraySize;
             }
-            self::assertSameSize($firstArray, $array);
+            self::assertSame($firstArraySize, $arraySize);
         }
-    }
-
-    /**
-     * @return void
-     * @throws TestValueExceptionInterface
-     */
-    public function testCache(): void
-    {
-        $testValues = new ImmutableTestValues();
-
-        $values1 = $testValues->getValues([TagEnum::STRING]);
-        $values2 = $testValues->getValues([TagEnum::STRING]);
-        self::assertSame($values1, $values2);
-
-        $strings1 = $testValues->strings();
-        $strings2 = $testValues->strings();
-        self::assertSame($strings1, $strings2);
-        self::assertNotSame($strings1, $values1);
     }
 
     /**
@@ -126,7 +111,7 @@ class ImmutableTestValuesTest extends TestCase
     public function testCompleteness(): void
     {
         $notFound = TagEnum::cases();
-        $values = (new ImmutableTestValues())->getValues();
+        $values = (new ImmutableTestValues())->getValueObjects();
         foreach ($values as $value) {
             $tags = $value->getTags();
             foreach ($tags->cases() as $tag) {
@@ -164,13 +149,13 @@ class ImmutableTestValuesTest extends TestCase
     }
 
     /**
-     * @param array<non-empty-string,mixed> $values
+     * @param \Generator<non-empty-string,mixed> $values
      * @param TagEnum $enum
      * @return void
      * @throws TestValueExceptionInterface
      * @throws \JsonException
      */
-    private function checkSingleTag(array $values, TagEnum $enum): void
+    private function checkSingleTag(\Generator $values, TagEnum $enum): void
     {
         $testValues = new ImmutableTestValues();
 
@@ -199,7 +184,7 @@ class ImmutableTestValuesTest extends TestCase
     public function testString(): void
     {
         $testValues = new ImmutableTestValues();
-        $array = $testValues->get(null, [TagEnum::STRING]);
-        self::assertNotEmpty($array);
+        $values = $testValues->get(null, [TagEnum::STRING]);
+        self::assertNotEmpty(iterator_to_array($values, true));
     }
 }

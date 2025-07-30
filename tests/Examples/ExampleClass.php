@@ -3,13 +3,13 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: ExampleClass.php
  * Project: Testing
- * Modified at: 22/07/2025, 17:44
+ * Modified at: 29/07/2025, 23:50
  * Modified by: pnehls
  */
 
 declare(strict_types=1);
 
-namespace Iomywiab\Tests\Testing\Example;
+namespace Iomywiab\Tests\Testing\Examples;
 
 use Iomywiab\Library\Testing\Formatting\Format4Testing;
 use Psr\Log\LoggerInterface;

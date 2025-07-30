@@ -1,22 +1,22 @@
 <?php
 /*
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
- * File name: ImmutableDateTimeTestValue.php
+ * File name: ImmutableDateTimeTestValueObject.php
  * Project: Testing
- * Modified at: 21/07/2025, 10:18
+ * Modified at: 29/07/2025, 23:14
  * Modified by: pnehls
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace Iomywiab\Library\Testing\Values\Types;
+namespace Iomywiab\Library\Testing\Values\ValueObjects;
 
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueException;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
 use Iomywiab\Library\Testing\Values\Tags\TagsInterface;
 
-class ImmutableDateTimeTestValue extends AbstractImmutableSingleTestValue
+class ImmutableDateTimeTestValueObject extends AbstractImmutableTestValueObject
 {
     protected const TYPE_DESCRIPTION = 'dateTime';
 
@@ -25,7 +25,7 @@ class ImmutableDateTimeTestValue extends AbstractImmutableSingleTestValue
      * @param non-empty-string|\DateTimeInterface $dateTime
      * @param TagsInterface|null $tags
      */
-    public function __construct(?string $description, string|\DateTimeInterface $dateTime, ?TagsInterface $tags=null)
+    public function __construct(?string $description, string|\DateTimeInterface $dateTime, ?TagsInterface $tags = null)
     {
         try {
             // @phpstan-ignore voku.NotIdentical
@@ -48,16 +48,6 @@ class ImmutableDateTimeTestValue extends AbstractImmutableSingleTestValue
     /**
      * @inheritDoc
      */
-    public function toString(): string
-    {
-        \assert($this->value instanceof \DateTimeInterface);
-
-        return $this->value->format(\DateTimeInterface::ATOM);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function toInt(): int
     {
         \assert($this->value instanceof \DateTimeInterface);
@@ -73,5 +63,15 @@ class ImmutableDateTimeTestValue extends AbstractImmutableSingleTestValue
         \assert($this->value instanceof \DateTimeInterface);
 
         return $this->value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toString(): string
+    {
+        \assert($this->value instanceof \DateTimeInterface);
+
+        return $this->value->format(\DateTimeInterface::ATOM);
     }
 }

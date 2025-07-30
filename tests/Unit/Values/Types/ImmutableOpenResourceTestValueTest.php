@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: ImmutableOpenResourceTestValueTest.php
  * Project: Testing
- * Modified at: 29/07/2025, 18:34
+ * Modified at: 29/07/2025, 23:14
  * Modified by: pnehls
  */
 
@@ -14,14 +14,14 @@ namespace Iomywiab\Tests\Testing\Unit\Values\Types;
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
-use Iomywiab\Library\Testing\Values\Types\AbstractImmutableSingleTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableOpenResourceTestValue;
+use Iomywiab\Library\Testing\Values\ValueObjects\AbstractImmutableTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableOpenResourceTestValueObject;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(ImmutableOpenResourceTestValue::class)]
-#[UsesClass(AbstractImmutableSingleTestValue::class)]
+#[CoversClass(ImmutableOpenResourceTestValueObject::class)]
+#[UsesClass(AbstractImmutableTestValueObject::class)]
 #[UsesClass(TagEnum::class)]
 #[UsesClass(Tags::class)]
 class ImmutableOpenResourceTestValueTest extends TestCase
@@ -33,7 +33,7 @@ class ImmutableOpenResourceTestValueTest extends TestCase
     public function testOpenResource(): void
     {
         $openResource = \fopen('php://memory', 'rb');
-        $value = new ImmutableOpenResourceTestValue('test', $openResource);
+        $value = new ImmutableOpenResourceTestValueObject('test', $openResource);
         self::assertSame($openResource, $value->toResource());
         self::assertStringStartsWith('stream (id:', $value->toString());
     }

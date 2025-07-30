@@ -3,13 +3,13 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: ExampleTest.php
  * Project: Testing
- * Modified at: 23/07/2025, 21:21
+ * Modified at: 30/07/2025, 10:40
  * Modified by: pnehls
  */
 
 declare(strict_types=1);
 
-namespace Iomywiab\Tests\Testing\Example;
+namespace Iomywiab\Tests\Testing\Examples;
 
 use Iomywiab\Library\Testing\Formatting\Format4Testing;
 use Iomywiab\Library\Testing\Logging\Logger4Testing;
@@ -26,10 +26,10 @@ use PHPUnit\Framework\TestCase;
 class ExampleTest extends TestCase
 {
     /**
-     * @return non-empty-array<non-empty-string,mixed>
+     * @return \Generator<non-empty-string,mixed>
      * @throws TestValueExceptionInterface
      */
-    public static function provideTestData(): array
+    public static function provideTestData(): \Generator
     {
         // Create a PHPUnit compatible parameter list
         $template = ['someBoolean' => true, 'key' => SubstitutionEnum::KEY, 'value' => SubstitutionEnum::VALUE];

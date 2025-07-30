@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: ImmutableCharTestValueTest.php
  * Project: Testing
- * Modified at: 29/07/2025, 18:34
+ * Modified at: 29/07/2025, 23:14
  * Modified by: pnehls
  */
 
@@ -14,14 +14,14 @@ namespace Iomywiab\Tests\Testing\Unit\Values\Types;
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
-use Iomywiab\Library\Testing\Values\Types\AbstractImmutableSingleTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableCharTestValue;
+use Iomywiab\Library\Testing\Values\ValueObjects\AbstractImmutableTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableCharTestValueObject;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(ImmutableCharTestValue::class)]
-#[UsesClass(AbstractImmutableSingleTestValue::class)]
+#[CoversClass(ImmutableCharTestValueObject::class)]
+#[UsesClass(AbstractImmutableTestValueObject::class)]
 #[UsesClass(TagEnum::class)]
 #[UsesClass(Tags::class)]
 class ImmutableCharTestValueTest extends TestCase
@@ -32,7 +32,7 @@ class ImmutableCharTestValueTest extends TestCase
      */
     public function testChars(): void
     {
-        $value = new ImmutableCharTestValue('test', 'X');
+        $value = new ImmutableCharTestValueObject('test', 'X');
         self::assertSame('X', $value->toString());
     }
 }

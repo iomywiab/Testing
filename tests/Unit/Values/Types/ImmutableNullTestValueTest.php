@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: ImmutableNullTestValueTest.php
  * Project: Testing
- * Modified at: 29/07/2025, 18:41
+ * Modified at: 29/07/2025, 23:14
  * Modified by: pnehls
  */
 
@@ -14,14 +14,14 @@ namespace Iomywiab\Tests\Testing\Unit\Values\Types;
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
-use Iomywiab\Library\Testing\Values\Types\AbstractImmutableSingleTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableNullTestValue;
+use Iomywiab\Library\Testing\Values\ValueObjects\AbstractImmutableTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableNullTestValueObject;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(ImmutableNullTestValue::class)]
-#[UsesClass(AbstractImmutableSingleTestValue::class)]
+#[CoversClass(ImmutableNullTestValueObject::class)]
+#[UsesClass(AbstractImmutableTestValueObject::class)]
 #[UsesClass(TagEnum::class)]
 #[UsesClass(Tags::class)]
 class ImmutableNullTestValueTest extends TestCase
@@ -32,7 +32,7 @@ class ImmutableNullTestValueTest extends TestCase
      */
     public function testNull(): void
     {
-        $value = new ImmutableNullTestValue('test', null);
+        $value = new ImmutableNullTestValueObject('test', null);
         self::assertSame('null', $value->toString());
         self::assertSame('null', $value->getTitle());
     }

@@ -1,20 +1,20 @@
 <?php
 /*
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
- * File name: ImmutableObjectTestValue.php
+ * File name: ImmutableObjectTestValueObject.php
  * Project: Testing
- * Modified at: 21/07/2025, 10:18
+ * Modified at: 29/07/2025, 23:14
  * Modified by: pnehls
  */
 
 declare(strict_types=1);
 
-namespace Iomywiab\Library\Testing\Values\Types;
+namespace Iomywiab\Library\Testing\Values\ValueObjects;
 
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
 use Iomywiab\Library\Testing\Values\Tags\TagsInterface;
 
-class ImmutableObjectTestValue extends AbstractImmutableSingleTestValue
+class ImmutableObjectTestValueObject extends AbstractImmutableTestValueObject
 {
     protected const TYPE_DESCRIPTION = 'object';
 
@@ -51,7 +51,7 @@ class ImmutableObjectTestValue extends AbstractImmutableSingleTestValue
         return match (true) {
             $this->value instanceof \Stringable => (string)$this->value,
             \method_exists($this->value, 'toString') => $this->value->toString(),
-            default=>\serialize($this->value),
+            default => \serialize($this->value),
         };
     }
 }

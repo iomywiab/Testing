@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: DataProviderTest.php
  * Project: Testing
- * Modified at: 29/07/2025, 17:45
+ * Modified at: 30/07/2025, 10:47
  * Modified by: pnehls
  */
 
@@ -19,9 +19,9 @@ use Iomywiab\Library\Testing\Values\Filter;
 use Iomywiab\Library\Testing\Values\ImmutableTestValues;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
 use Iomywiab\Library\Testing\Values\TestValues;
-use Iomywiab\Library\Testing\Values\Types\AbstractImmutableSingleTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableIntegerTestValue;
-use Iomywiab\Library\Testing\Values\Types\ImmutableNullTestValue;
+use Iomywiab\Library\Testing\Values\ValueObjects\AbstractImmutableTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableIntegerTestValueObject;
+use Iomywiab\Library\Testing\Values\ValueObjects\ImmutableNullTestValueObject;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -33,9 +33,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TestValueExceptionInterface::class)]
 #[UsesClass(ImmutableTestValues::class)]
 #[UsesClass(Tags::class)]
-#[UsesClass(AbstractImmutableSingleTestValue::class)]
-#[UsesClass(ImmutableIntegerTestValue::class)]
-#[UsesClass(ImmutableNullTestValue::class)]
+#[UsesClass(AbstractImmutableTestValueObject::class)]
+#[UsesClass(ImmutableIntegerTestValueObject::class)]
+#[UsesClass(ImmutableNullTestValueObject::class)]
 #[UsesClass(Filter::class)]
 class DataProviderTest extends TestCase
 {
@@ -52,7 +52,7 @@ class DataProviderTest extends TestCase
         $expected = [
             'null' => ['one' => true, 'two' => 'null', 'three' => null, 'four' => 'test'],
         ];
-        self::assertEquals($expected, $values);
+        self::assertEquals($expected, \iterator_to_array($values, true));
 
         $values = DataProvider::byTemplate(['one' => true, 'two' => 1, 'three' => SubstitutionEnum::VALUE, 'four' => 'test'], TagEnum::PRIME);
         $expected = [
@@ -64,7 +64,7 @@ class DataProviderTest extends TestCase
             'prime of prime(signed 4 byte prime number): 2147483647'    => ['one' => true, 'two' => 1, 'three' => 2147483647, 'four' => 'test'],
         ];
 
-        self::assertEquals($expected, $values);
+        self::assertEquals($expected, \iterator_to_array($values, true));
     }
 
     public function testInjectKeys(): void
@@ -73,6 +73,6 @@ class DataProviderTest extends TestCase
         self::assertEquals([
             'a' => ['one' => 1, 'two' => 2, 11 => 3, 22 => 4],
             'b' => ['one' => 5, 'two' => 6, 11 => 7, 22 => 8]
-        ], $values);
+        ], iterator_to_array($values, true));
     }
 }

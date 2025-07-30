@@ -1,40 +1,40 @@
 <?php
 /*
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
- * File name: ImmutableIntegerTestValue.php
+ * File name: ImmutableFloatTestValueObject.php
  * Project: Testing
- * Modified at: 21/07/2025, 10:18
+ * Modified at: 29/07/2025, 23:14
  * Modified by: pnehls
  */
 
 declare(strict_types=1);
 
-namespace Iomywiab\Library\Testing\Values\Types;
+namespace Iomywiab\Library\Testing\Values\ValueObjects;
 
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
 use Iomywiab\Library\Testing\Values\Tags\TagsInterface;
 
-class ImmutableIntegerTestValue extends AbstractImmutableSingleTestValue
+class ImmutableFloatTestValueObject extends AbstractImmutableTestValueObject
 {
-    protected const TYPE_DESCRIPTION = 'integer';
+    protected const TYPE_DESCRIPTION = 'float';
 
     /**
      * @param non-empty-string|null $description
-     * @param int $integer
+     * @param float $float
      * @param TagsInterface|null $tags
      * @throws TestValueExceptionInterface
      */
-    public function __construct(?string $description, int $integer, ?TagsInterface $tags = null)
+    public function __construct(?string $description, float $float, ?TagsInterface $tags = null)
     {
-        parent::__construct($description, $integer, $tags);
+        parent::__construct($description, $float, $tags);
     }
 
     /**
      * @inheritDoc
      */
-    public function toInt(): int
+    public function toFloat(): float
     {
-        \assert(\is_int($this->value));
+        \assert(\is_float($this->value));
 
         return $this->value;
     }
@@ -44,7 +44,7 @@ class ImmutableIntegerTestValue extends AbstractImmutableSingleTestValue
      */
     public function toString(): string
     {
-        \assert(\is_int($this->value));
+        \assert(\is_float($this->value));
 
         return (string)$this->value;
     }

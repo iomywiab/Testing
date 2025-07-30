@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: TestValues.php
  * Project: Testing
- * Modified at: 29/07/2025, 17:06
+ * Modified at: 29/07/2025, 23:12
  * Modified by: pnehls
  */
 
@@ -21,7 +21,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function arrays(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function arrays(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->arrays($excludeTags);
     }
@@ -41,7 +41,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function booleans(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function booleans(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->booleans($excludeTags);
     }
@@ -49,7 +49,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function empties(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function empties(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->empties($excludeTags);
     }
@@ -57,7 +57,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function enums(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function enums(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->enums($excludeTags);
     }
@@ -65,7 +65,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function floats(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function floats(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->floats($excludeTags);
     }
@@ -73,7 +73,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function get(TagsInterface|array|TagEnum|null $includeTags = null, TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function get(TagsInterface|array|TagEnum|null $includeTags = null, TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->get($includeTags, $excludeTags);
     }
@@ -81,15 +81,15 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function getValues(TagsInterface|TagEnum|array|null $includeTags = null, TagsInterface|TagEnum|array|null $excludeTags = null): array
+    public static function getValueObjects(TagsInterface|TagEnum|array|null $includeTags = null, TagsInterface|TagEnum|array|null $excludeTags = null): \Generator
     {
-        return self::getTestValues()->getValues($includeTags, $excludeTags);
+        return self::getTestValues()->getValueObjects($includeTags, $excludeTags);
     }
 
     /**
      * @inheritDoc
      */
-    public static function getWithout(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function getWithout(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->getWithout($excludeTags);
     }
@@ -97,7 +97,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function integers(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function integers(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->integers($excludeTags);
     }
@@ -105,7 +105,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function ipAddresses(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function ipAddresses(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->ipAddresses($excludeTags);
     }
@@ -113,7 +113,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function ipv4Addresses(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function ipv4Addresses(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->ipv4Addresses($excludeTags);
     }
@@ -121,7 +121,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function ipv6Addresses(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function ipv6Addresses(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->ipv6Addresses($excludeTags);
     }
@@ -129,7 +129,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function nulls(): array
+    public static function nulls(): \Generator
     {
         return self::getTestValues()->nulls();
     }
@@ -137,7 +137,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function objects(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function objects(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->objects($excludeTags);
     }
@@ -145,7 +145,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function resources(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function resources(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->resources($excludeTags);
     }
@@ -153,7 +153,7 @@ class TestValues implements TestValuesInterface
     /**
      * @inheritDoc
      */
-    public static function strings(TagsInterface|array|TagEnum|null $excludeTags = null): array
+    public static function strings(TagsInterface|array|TagEnum|null $excludeTags = null): \Generator
     {
         return self::getTestValues()->strings($excludeTags);
     }

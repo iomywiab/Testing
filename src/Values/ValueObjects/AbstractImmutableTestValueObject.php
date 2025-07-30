@@ -1,15 +1,15 @@
 <?php
 /*
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
- * File name: AbstractImmutableSingleTestValue.php
+ * File name: AbstractImmutableTestValueObject.php
  * Project: Testing
- * Modified at: 29/07/2025, 20:52
+ * Modified at: 29/07/2025, 23:14
  * Modified by: pnehls
  */
 
 declare(strict_types=1);
 
-namespace Iomywiab\Library\Testing\Values\Types;
+namespace Iomywiab\Library\Testing\Values\ValueObjects;
 
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueException;
@@ -18,7 +18,7 @@ use Iomywiab\Library\Testing\Values\Exceptions\TestValueNotImplementedException;
 use Iomywiab\Library\Testing\Values\Tags\Tags;
 use Iomywiab\Library\Testing\Values\Tags\TagsInterface;
 
-abstract class AbstractImmutableSingleTestValue implements ImmutableSingleTestValueInterface
+abstract class AbstractImmutableTestValueObject implements ImmutableSingleTestValueObjectInterface
 {
     /** @var string TYPE_DESCRIPTION to be overloaded */
     protected const TYPE_DESCRIPTION = '';
