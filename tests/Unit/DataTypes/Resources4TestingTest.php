@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: Resources4TestingTest.php
  * Project: Testing
- * Modified at: 30/07/2025, 18:09
+ * Modified at: 30/07/2025, 18:51
  * Modified by: pnehls
  */
 
@@ -42,6 +42,16 @@ class Resources4TestingTest extends TestCase
     public function testGetOpenFile(): void
     {
         $file = Resources4Testing::getOpenFile();
+        self::assertIsResource($file);
+        \fclose($file);
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetOpenFileForDataProvider(): void
+    {
+        $file = Resources4Testing::getOpenFileForDataProvider();
         self::assertIsResource($file);
         \fclose($file);
     }
