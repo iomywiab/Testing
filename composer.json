@@ -54,5 +54,14 @@
         "allow-plugins": {
             "phpstan/extension-installer": true
         }
+    },
+    "archive": {
+        "exclude": [
+            "/config",
+            "/tests",
+            "/tmp",
+            "/docker-compose.yml",
+            "/Makefile"
+        ]
     }
 }
