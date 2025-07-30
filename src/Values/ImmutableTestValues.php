@@ -4,7 +4,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: ImmutableTestValues.php
  * Project: Testing
- * Modified at: 30/07/2025, 10:27
+ * Modified at: 30/07/2025, 18:12
  * Modified by: pnehls
  */
 
@@ -14,6 +14,7 @@ namespace Iomywiab\Library\Testing\Values;
 
 use Iomywiab\Library\Testing\DataTypes\Enum4Testing;
 use Iomywiab\Library\Testing\DataTypes\IntEnum4Testing;
+use Iomywiab\Library\Testing\DataTypes\Resources4Testing;
 use Iomywiab\Library\Testing\DataTypes\StringEnum4Testing;
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
@@ -40,8 +41,6 @@ class ImmutableTestValues implements ImmutableTestValuesInterface
     /** @noinspection SpellCheckingInspection */
     private const ALL_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
     ."^°!\"§$%&/()[]{}=?`´äÄöÖüÜ+*#',;.:-_\\\t|~@\n\r";
-
-    private const TEST_FILE = __DIR__.'/../Fixtures/TestValuesFile.txt';
 
     /** @var array<non-empty-string,ImmutableSingleTestValueObjectInterface> $values */
     private readonly array $values;
@@ -227,20 +226,10 @@ class ImmutableTestValues implements ImmutableTestValuesInterface
         $values[] = new ImmutablePrimeTestValue('signed 4 byte prime number', 2147483647);
 
         // RESOURCE
-        $openFile = \fopen(self::TEST_FILE, 'rb');
-        $closedFile = \fopen(self::TEST_FILE, 'rb');
-        $openResource = \fopen('php://memory', 'rb');
-        $closedResource = \fopen('php://memory', 'rb');
-        if (false !== $closedFile) {
-            \fclose($closedFile);
-        }
-        if (false !== $closedResource) {
-            \fclose($closedResource);
-        }
-        $values[] = new ImmutableOpenResourceTestValueObject('file', $openFile);
-        $values[] = new ImmutableOpenResourceTestValueObject('memory', $openResource);
-        $values[] = new ImmutableClosedResourceTestValueObject('file', $closedFile);
-        $values[] = new ImmutableClosedResourceTestValueObject('memory', $closedResource);
+        $values[] = new ImmutableOpenResourceTestValueObject('file', Resources4Testing::getOpenFile());
+        $values[] = new ImmutableOpenResourceTestValueObject('memory', Resources4Testing::getOpenMemoryStream());
+        $values[] = new ImmutableClosedResourceTestValueObject('file', Resources4Testing::getClosedFile());
+        $values[] = new ImmutableClosedResourceTestValueObject('memory', Resources4Testing::getClosedMemoryStream());
 
         // STRING
         $values[] = new ImmutableStringTestValueObject('empty', '');

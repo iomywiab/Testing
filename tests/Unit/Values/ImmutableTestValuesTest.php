@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: ImmutableTestValuesTest.php
  * Project: Testing
- * Modified at: 30/07/2025, 10:49
+ * Modified at: 30/07/2025, 17:59
  * Modified by: pnehls
  */
 
@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Iomywiab\Tests\Testing\Unit\Values;
 
+use Iomywiab\Library\Testing\DataTypes\Resources4Testing;
 use Iomywiab\Library\Testing\Formatting\Format4Testing;
 use Iomywiab\Library\Testing\Values\Enums\TagEnum;
 use Iomywiab\Library\Testing\Values\Exceptions\TestValueExceptionInterface;
@@ -42,6 +43,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Filter::class)]
 #[UsesClass(ImmutableStringTestValueObject::class)]
 #[UsesClass(ImmutablePrimeTestValue::class)]
+#[UsesClass(Resources4Testing::class)]
 class ImmutableTestValuesTest extends TestCase
 {
     /**

@@ -3,7 +3,7 @@
  * Copyright (c) 2022-2025 Iomywiab/PN, Hamburg, Germany. All rights reserved
  * File name: Format4Testing.php
  * Project: Testing
- * Modified at: 21/07/2025, 10:18
+ * Modified at: 30/07/2025, 18:03
  * Modified by: pnehls
  */
 
@@ -61,33 +61,6 @@ class Format4Testing
     }
 
     /**
-     * @param array<array-key,mixed> $array
-     * @return string
-     * @throws \JsonException
-     */
-    private static function arrayToString(array $array): string
-    {
-        $string = '';
-        $separator = '';
-        foreach ($array as $key => $value) {
-            $string .= $separator.self::toString($key).'=>'.self::toString($value);
-            $separator = ', ';
-        }
-
-        return $string;
-    }
-
-    /**
-     * @param object $object
-     * @return non-empty-string
-     */
-    public static function toClassName(object $object): string
-    {
-        // @phpstan-ignore return.type
-        return (new \ReflectionClass($object))->getShortName();
-    }
-
-    /**
      * @param mixed $value
      * @return string
      * @throws \JsonException
@@ -120,5 +93,39 @@ class Format4Testing
             'NULL' => 'null',
             'unknown type' => 'n/a',
         };
+    }
+
+    /**
+     * @param array<array-key,mixed> $array
+     * @return string
+     * @throws \JsonException
+     */
+    private static function arrayToString(array $array): string
+    {
+        $string = '';
+        $separator = '';
+        foreach ($array as $key => $value) {
+            $string .= $separator.self::toString($key).'=>'.self::toString($value);
+            $separator = ', ';
+        }
+
+        return $string;
+    }
+
+    /**
+     * @param object $object
+     * @return non-empty-string
+     */
+    public static function toClassName(object $object): string
+    {
+        // we are trying to avoid reflection classes
+        //return (new \ReflectionClass($object))->getShortName();
+
+        $pos = \mb_strrpos($object::class, '\\');
+        $name = (false === $pos)
+            ? $object::class
+            : \mb_substr($object::class, $pos + 1);
+
+        return ('' === $name) ? 'n/a' : $name;
     }
 }
